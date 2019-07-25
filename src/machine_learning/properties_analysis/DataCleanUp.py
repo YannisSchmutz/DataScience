@@ -5,19 +5,6 @@ import re
 from src.miscellaneous import pseudoLogger as log
 from src.machine_learning.properties_analysis.CSVHandler import write_csv, validate_csv
 
-"""
-TODO: 
-First, concentrate on downloading all html-raw data and save it to a file. 
-Create a script, which does just this. 
-So I don't have to create a request every time.
-
-Then think about the design and what to archive in the first place.
---> PIPE AND FILTER!?
-How to clean the data?
-Create a NN? Take data from a csv?
-
-"""
-
 
 html_example_articles = """
 <article class="sc-efAmGo hXkPzi sc-jDwBTQ bIOWur" title="Studios mit grosszÃ¼gigem Balkon">
