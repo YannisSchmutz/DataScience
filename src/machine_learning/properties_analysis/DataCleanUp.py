@@ -2,6 +2,8 @@
 from bs4 import BeautifulSoup
 from pprint import pprint
 import re
+from src.miscellaneous import pseudoLogger as log
+from src.machine_learning.properties_analysis.CSVHandler import write_csv, validate_csv
 
 """
 TODO: 
@@ -15,12 +17,6 @@ How to clean the data?
 Create a NN? Take data from a csv?
 
 """
-
-"""
-Circa 1500 articles.
-"""
-with open("properties_html_data.raw", "r") as file_handler:
-    soup = BeautifulSoup(file_handler, features="html.parser")
 
 
 html_example_articles = """
@@ -189,11 +185,16 @@ html_example_articles = """
 </article>
 """
 
-#soup = BeautifulSoup(html_example_articles, 'html.parser')
 
-address_identify_class_string = 'sc-kGXeez kGCUgG'
-rooms_identify_class_string = 'sc-dRFBHB sc-kSFxNF evUype'
-price_identify_class_string = 'sc-eKQksS sc-hJfILt jWzJWn'
+def clean_umlaut(string):
+    """
+    # Ã¤ = ä
+    # Ã¶ = ö
+    # Ã¼ = ü
+    :param string:
+    :return:
+    """
+    return string.replace('Ã¤', 'ä').replace('Ã¶', 'ö').replace('Ã¼', 'ü')
 
 
 def clean_address(address_txt):
@@ -202,15 +203,18 @@ def clean_address(address_txt):
     Just consider happy-path. IndexError gets raised if the address_txt is not complete.
 
     :param address_txt: Address string. E.g "Hebelstrasse 109, 4056 Basel, BS"
-    :raises IndexError
+    :raises IndexError, ValueError
     :return:
     """
     partitioned_address = address_txt.split(', ')
-    street = partitioned_address[0].split(' ')[0]
-    street_nbr = partitioned_address[0].split(' ')[1]
-    plz = partitioned_address[1].split(' ')[0]
-    place = partitioned_address[1].split(' ')[1]
-    return street, street_nbr, plz, place
+
+    street = clean_umlaut(re.findall('[^0-9]+', partitioned_address[0])[0].strip())
+    # Does not include possible characters after the street number like: 13a
+    street_nbr = re.findall('\d+', partitioned_address[0])[0]
+    plz = re.findall('\d{4}', partitioned_address[1])[0]
+    place = clean_umlaut(re.findall('[^0-9]+', partitioned_address[1])[0].strip())
+    canton = partitioned_address[2]
+    return street, street_nbr, plz, place, canton
 
 
 def clean_room_info(room_info_txt):
@@ -242,40 +246,82 @@ def clean_price(price_txt):
     return price
 
 
-#limit = 3
-limit = 20000
-c = 0
-failures = 0
-for article in soup.find_all('article'):
+def get_cleaned_data(soup, limit=-1):
+    limit_counter = 0
+    failures = 0
+    # Street, Number, PLZ, place, canton, rooms, area, price
+    data_list = []
 
-    print('............')
-    print(article['title'])
-    try:
-        # Do room info cleaning first! Some articles do not display the amount of square meters -> fail fast!
-        room_info_txt = article.find_all('h3', {'class': rooms_identify_class_string}).pop().text
-        nbr_of_rooms, area = clean_room_info(room_info_txt)
+    # !!! Beware !!! These strings have to be adjusted to a given data set!
+    address_identify_class_string = 'sc-kGXeez kGCUgG'
+    rooms_identify_class_string = 'sc-dRFBHB sc-kSFxNF evUype'
+    price_identify_class_string = 'sc-eKQksS sc-hJfILt jWzJWn'
 
-        address_txt = article.find_all('a', {'class': address_identify_class_string}).pop().text
-        street, street_nbr, plz, place = clean_address(address_txt)
+    articles = soup.find_all('article')
+    articles_size = len(articles)
+    limit = articles_size if limit < 0 else limit
 
-        price_txt = article.find_all('h3', {'class': price_identify_class_string}).pop().text
-        price = clean_price(price_txt)
+    log.info("Total articles: {na}".format(na=articles_size))
+    log.info("Limit of articles: {la}".format(la=limit))
 
-    except IndexError:
-        failures += 1
-        continue
-    except ValueError:
-        failures += 1
-        continue
+    for article in articles:
+        #print(article['title'])
+        #print('-------------')
+        try:
+            # Do room info cleaning first! Some articles do not display the amount of square meters -> fail fast!
+            room_info_txt = article.find_all('h3', {'class': rooms_identify_class_string}).pop().text
+            # print(room_info_txt)
+            nbr_of_rooms, area = clean_room_info(room_info_txt)
 
-    print(street, street_nbr, plz, place)
-    print(nbr_of_rooms, area)
-    print(price)
+            address_txt = article.find_all('a', {'class': address_identify_class_string}).pop().text
+            # print(address_txt)
+            if address_txt == room_info_txt:
+                # It may happen, that there is no street (and number) given in the address
+                # In that case, the address tag is no <a> but a <span> tag.
+                # So the class-string does match wrong and address_txt becomes the same value as room_info_txt
+                raise ValueError
+            street, street_nbr, plz, place, canton = clean_address(address_txt)
 
-    print('............')
-    c += 1
-    if c == limit:
-        break
+            price_txt = article.find_all('h3', {'class': price_identify_class_string}).pop().text
+            # print(price_txt)
+            price = clean_price(price_txt)
 
-print("Number of failures: {f}".format(f=str(failures)))
+        except IndexError:
+            failures += 1
+            continue
+        except ValueError:
+            failures += 1
+            continue
+
+        data_list.append((street, street_nbr, plz, place, canton, nbr_of_rooms, area, price))
+
+        limit_counter += 1
+        if limit_counter == limit:
+            break
+
+    treated_articles = limit_counter + failures
+
+    log.info(f"Treated {treated_articles} articles")
+    log.info(f"Number of failures: {failures}")
+    log.info("Fail-rate: {fr}%".format(fr=str(round((failures/treated_articles)*100, 2))))
+    return data_list
+
+
+if __name__ == '__main__':
+    # About 1600 articles
+    with open("properties_html_data.raw", "r") as file_handler:
+        soup = BeautifulSoup(file_handler, features="html.parser")
+
+    #print(soup.find_all('article').pop(9).prettify())
+    data = get_cleaned_data(soup)
+    print(data)
+    print(len(data))
+
+    write_csv('properties_data_1.csv', data, data_description=('street', 'number', 'plz',
+                                                               'place', 'canton', 'rooms',
+                                                               'area', 'price'))
+    validate_csv('properties_data_1.csv', (str, int, int, str, str, float, int, int))
+
+
+
 
