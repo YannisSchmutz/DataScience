@@ -35,9 +35,10 @@ class NeuralNetwork:
         final_outputs = self.activation_function(final_inputs)
 
         output_errors = targets - final_outputs
-        hidden_errors = np.dot(self.weight_hidden_output.T, output_errors)
         self.weight_hidden_output += self.learningrate * np.dot((output_errors * final_outputs * (1.0 - final_outputs)),
                                                                 np.transpose(hidden_outputs))
+
+        hidden_errors = np.dot(self.weight_hidden_output.T, output_errors)
         self.weight_input_hidden += self.learningrate * np.dot(
             (hidden_errors * hidden_outputs * (1.0 - hidden_outputs)), np.transpose(inputs))
 
