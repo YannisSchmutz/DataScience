@@ -1,13 +1,53 @@
 from math import e, pow
 import csv
 from pprint import pprint
+from random import shuffle
+import numpy as np
 
 
 class RentPredictionNeuralNetwork:
 
-    def __init__(self):
+    def __init__(self, learning_rate):
+        """
+        Input matrix
+        ............
+            i1
+        I = i2
+            i3
+
+        Weight-Input-Hidden-Matrix
+        ..........................
+        Wih = w11 w21 w31
+              w12 w22 w32
+
+        Hidden-Nodes-Matrix
+        ...................
+        H = h1
+            h2
+
+        Weight-Hidden-Output-Matrix
+        ...........................
+        Who = w4 w5
+
+        Output-Matrix
+        .............
+        O = o1
+
+        H = Whih * I
+        O = Who * H
+
+        """
+        self.learning_rate = learning_rate
+
         self.activation_function = lambda x: 1/(1 + pow(e, -x))
-        pass
+        r = lambda: np.random.uniform(low=-0.99, high=0.99)
+
+        self.weight_input_hidden = np.matrix([[r(), r(), r()],
+                                              [r(), r(), r()]])
+        self.weight_hidden_output = np.matrix([r(), r()])
+
+        print(self.weight_input_hidden)
+        print(self.weight_hidden_output)
 
     def train(self):
         pass
@@ -44,6 +84,8 @@ class RentPredictionNeuralNetwork:
                                           normalization_function(line[3], min_price, max_price),
                                           ), data_set))
 
+        # Shuffle the data set for more variety in small training/ test sets
+        shuffle(data_set)
         return data_set
 
 
@@ -51,6 +93,8 @@ if __name__ == '__main__':
 
     # Prepare just the data I want to use
     # street,number,plz,place,canton,rooms,area,price
+    # -> canton, rooms, area, price
+    # Data set is 1271 lines long
     with open('properties_data_1.csv', 'r') as fh:
         csv_reader = csv.reader(fh, delimiter=',')
         pprint(dir(csv_reader))
@@ -62,7 +106,7 @@ if __name__ == '__main__':
     # Normalize input values
     data_set = RentPredictionNeuralNetwork.normalize_data_set(data_set)
 
-    train_set = data_set[900:910]
+    train_set = data_set[:10]
     pprint(train_set)
 
     nn = RentPredictionNeuralNetwork()
