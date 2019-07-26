@@ -44,10 +44,15 @@ class RentPredictionNeuralNetwork:
         self._max_area = None
         self._min_price = None
         self._max_price = None
+
         # Canton value must be a float value from 0.001 to 0.99 and no string
+        # TODO: Canton is a NOMINAL value! Use another method to handle this.
+        # TODO: Have a look at "One-Hot Encoding".
         self._canton_mapper = {'BE': 0.01,
                                'ZH': 0.5,
-                               'BS': 0.99}
+                               'BS': 0.99,
+                               'LU': 0.25,
+                               }
 
         self.learning_rate = learning_rate
 
@@ -58,9 +63,6 @@ class RentPredictionNeuralNetwork:
         self.weight_input_hidden = np.array([[r(), r(), r()],
                                              [r(), r(), r()]])
         self.weight_hidden_output = np.array([r(), r()], ndmin=2)
-
-        #print(self.weight_input_hidden)
-        #print(self.weight_hidden_output)
 
     def train(self, inputs, target):
 
@@ -104,8 +106,6 @@ class RentPredictionNeuralNetwork:
                          )
         return reversed_data
 
-
-
     def reverse_normalized_price(self, normalized_price):
         price = ((normalized_price/0.99)-0.01) * (self._max_price - self._min_price) + self._min_price
         return round(price, 0)
@@ -143,27 +143,35 @@ if __name__ == '__main__':
     # Prepare just the data I want to use
     # street,number,plz,place,canton,rooms,area,price
     # -> canton, rooms, area, price
-    # Data set is 1271 lines long
+    # Data set1 is 1271 lines long
     with open('properties_data_1.csv', 'r') as fh:
         csv_reader = csv.reader(fh, delimiter=',')
         # Skip header
         next(csv_reader)
-        data_set = list(map(lambda line: (line[4], float(line[5]), float(line[6]), float(line[7])), csv_reader))
+        data_set1 = list(map(lambda line: (line[4], float(line[5]), float(line[6]), float(line[7])), csv_reader))
+
+    # Data-set2 = 1051
+    with open('properties_data_2.csv', 'r') as fh:
+        csv_reader = csv.reader(fh, delimiter=',')
+        # Skip header
+        next(csv_reader)
+        data_set2 = list(map(lambda line: (line[4], float(line[5]), float(line[6]), float(line[7])), csv_reader))
+
+    # Length = 2322
+    data_set = data_set1 + data_set2
 
     # pprint(data_set[:10])
     nn = RentPredictionNeuralNetwork(learning_rate=3)
     # Normalize input values
     data_set = nn.normalize_data_set(data_set)
 
-    train_set = data_set[:1260]
-    test_set = data_set[1260:1271]
-    # pprint(train_set)
-
+    train_set = data_set[:2200]
+    test_set = data_set[2200:]
 
     #sample = train_set[0]
     #nn.train(list(sample[:-1]), sample[-1])
 
-    epoches = 3
+    epoches = 9
     for _ in range(epoches):
         for data in train_set:
             # Beware to pass a list and not tuples
