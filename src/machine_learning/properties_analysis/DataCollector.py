@@ -11,7 +11,8 @@ BASE_URL = "https://www.immoscout24.ch/de/immobilien/mieten/"
 LOCATION_URL = "ort-{city}"
 PAGE_N = "?pn={nbr}"
 
-CITIES = ['bern', 'zuerich', 'basel']
+#CITIES = ['bern', 'zuerich', 'basel']
+CITIES = ['luzern', 'winterthur', 'thun', 'biel-bienne']
 
 response_string = ""
 
@@ -32,5 +33,6 @@ for city in CITIES:
             break
         sleep(2)  # Don't spam them too much
 
-with open("properties_html_data.raw", "w") as f:
+#with open("properties_html_data_BE_BS_ZH_26.07.19.raw", "w") as f:
+with open("properties_html_data_LU_WT_TH_BI_27.07.19.raw", "w") as f:
     f.write(response_string)

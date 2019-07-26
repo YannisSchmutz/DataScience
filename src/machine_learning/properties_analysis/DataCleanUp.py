@@ -296,7 +296,8 @@ def get_cleaned_data(soup, limit=-1):
 
 if __name__ == '__main__':
     # About 1600 articles
-    with open("properties_html_data.raw", "r") as file_handler:
+    #with open("properties_html_data_BE_BS_ZH_26.07.19.raw", "r") as file_handler:
+    with open("properties_html_data_LU_WT_TH_BI_27.07.19.raw", "r") as file_handler:
         soup = BeautifulSoup(file_handler, features="html.parser")
 
     #print(soup.find_all('article').pop(9).prettify())
@@ -304,10 +305,10 @@ if __name__ == '__main__':
     print(data)
     print(len(data))
 
-    write_csv('properties_data_1.csv', data, data_description=('street', 'number', 'plz',
+    write_csv('properties_data_2.csv', data, data_description=('street', 'number', 'plz',
                                                                'place', 'canton', 'rooms',
                                                                'area', 'price'))
-    validate_csv('properties_data_1.csv', (str, int, int, str, str, float, int, int))
+    validate_csv('properties_data_2.csv', (str, int, int, str, str, float, int, int))
 
 
 
