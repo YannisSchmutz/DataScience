@@ -3,6 +3,7 @@ from functools import reduce
 from collections import Counter, defaultdict
 from matplotlib import pyplot as plt
 from pprint import pprint
+from src.analytics.base_math_functions import mean, mean_deviation
 
 
 class BasicAnalysis:
@@ -12,69 +13,58 @@ class BasicAnalysis:
         self.ds_length = len(data_set)
         self.prices = list(map(lambda x: x[-1], self.ds))
 
-    def get_mean_price(self):
-        return reduce(lambda x, y: x + y, self.prices) / self.ds_length
-
-    def get_highest_price(self):
-        return max(self.prices)
-
-    def get_lowest_price(self):
-        return min(self.prices)
-
-    def get_median_price(self):
-        sorted_prices = sorted(self.prices)
-        midpoint = self.ds_length // 2
-        if len(self.ds) % 2:
-            return sorted_prices[midpoint]
-        else:
-            hi = sorted_prices[midpoint]
-            lo = sorted_prices[midpoint -1]
-            return (hi + lo) / 2
-
-    def get_percentile_of_prices(self, p):
-        """
-
-        :param p: Float value from 0.0 to 0.99..
-        :return:
-        """
-        sorted_prices = sorted(self.prices)
-        p_index = int(p * self.ds_length)
-        return sorted_prices[p_index]
-
-    def get_prices_mode(self):
-        """
-        Returns the prices which appear most often in the data set.
-        :return:
-        """
-        price_counter = Counter(self.prices)
-        max_count = max(price_counter.values())
-        return [x for x, count in price_counter.items() if count == max_count]
+        # street,number,plz,place,canton,rooms,area,price
+        self._index_map = {'street': 0,
+                           'number': 1,
+                           'plz': 2,
+                           'place': 3,
+                           'canton': 4,
+                           'rooms': 5,
+                           'area': 6,
+                           'price': 7,
+                           }
 
     def show_prices_boxplot(self):
         plt.boxplot(self.prices)
         plt.title("Price box plot")
         plt.show()
 
-    def show_average_zip_code_price(self):
+    def show_average_price_per_feature(self, feature, title, xlabel, ylabel, color="blue", rotation=45):
+        if feature not in self._index_map.keys():
+            raise ValueError("Selected feature is not available! Use one of the following {feats}".format(
+                feats=self._index_map.keys()
+            ))
 
-        zip_price_pairs = sorted(list(map(lambda x: (x[2], x[7]), self.ds)), key=lambda x: x[0])
+        feature_index = self._index_map[feature]
+        price_index = self._index_map["price"]
+        feature_price_pairs = sorted(list(map(lambda x: (x[feature_index], x[price_index]), self.ds)),
+                                     key=lambda x: x[0])
 
-        zip_avg_price_dict = defaultdict(float)
-        zips = list(map(lambda x: x[0], zip_price_pairs))
+        avg_price_dict = defaultdict(float)
+        features = list(map(lambda x: x[0], feature_price_pairs))
 
-        for zip in zips:
-            specific_zip_values = list(map(lambda x: x[1], filter(lambda x: x[0] == zip, zip_price_pairs)))
-            specific_zip_len = len(specific_zip_values)
-            zip_avg_price_dict[zip] = round(reduce(lambda x,y: x + y, specific_zip_values) / specific_zip_len, 0)
+        for feature in features:
+            specific_feature_values = list(map(lambda x: x[1], filter(lambda x: x[0] == feature, feature_price_pairs)))
+            specific_feature_len = len(specific_feature_values)
+            avg_price_dict[feature] = round(reduce(lambda x,y: x + y, specific_feature_values) / specific_feature_len, 0)
 
-        plt.bar(list(zip_avg_price_dict.keys()), list(zip_avg_price_dict.values()), color="blue")
+        plt.bar(list(avg_price_dict.keys()), list(avg_price_dict.values()), color=color)
+        plt.xticks(rotation=rotation)
 
-        plt.xticks(rotation=45)
-
-        plt.title("Average prices per ZIP code")
-        plt.ylabel("Price (CHF)")
-        plt.xlabel("ZIP codes")
+        plt.title(title)
+        plt.ylabel(ylabel)
+        plt.xlabel(xlabel)
         plt.show()
+
+    def get_price_deviations(self):
+        mean_price = mean(self.prices)
+        return [xi - mean_price for xi in self.prices]
+
+    def get_price_variance(self):
+        if len(self.prices) < 2:
+            raise ValueError("Length of prices must be at least 2")
+        price_deviations = mean_deviation(self.prices)
+        return sum(map(lambda x: x * x, price_deviations)) / (self.ds_length - 1)
 
 
 if __name__ == '__main__':
@@ -88,11 +78,8 @@ if __name__ == '__main__':
                             csv_reader
                             ))
 
-    print(data_set)
-    print(len(data_set))
+    print(data_set[0])
 
     ba = BasicAnalysis(data_set)
 
-    ba.show_prices_boxplot()
-
-    ba.show_average_zip_code_price()
+    ba.show_average_price_per_feature("area", "Average price per sqare meters", "Square meters", "Average price CHF")
