@@ -3,7 +3,7 @@ from functools import reduce
 from collections import Counter, defaultdict
 from matplotlib import pyplot as plt
 from pprint import pprint
-from src.analytics.base_math_functions import mean, mean_deviation
+from src.analytics.statistical_functions import variance, correlation
 
 
 class BasicAnalysis:
@@ -46,7 +46,7 @@ class BasicAnalysis:
         for feature in features:
             specific_feature_values = list(map(lambda x: x[1], filter(lambda x: x[0] == feature, feature_price_pairs)))
             specific_feature_len = len(specific_feature_values)
-            avg_price_dict[feature] = round(reduce(lambda x,y: x + y, specific_feature_values) / specific_feature_len, 0)
+            avg_price_dict[feature] = round(reduce(lambda x, y: x + y, specific_feature_values) / specific_feature_len, 0)
 
         plt.bar(list(avg_price_dict.keys()), list(avg_price_dict.values()), color=color)
         plt.xticks(rotation=rotation)
@@ -56,15 +56,22 @@ class BasicAnalysis:
         plt.xlabel(xlabel)
         plt.show()
 
-    def get_price_deviations(self):
-        mean_price = mean(self.prices)
-        return [xi - mean_price for xi in self.prices]
-
     def get_price_variance(self):
-        if len(self.prices) < 2:
-            raise ValueError("Length of prices must be at least 2")
-        price_deviations = mean_deviation(self.prices)
-        return sum(map(lambda x: x * x, price_deviations)) / (self.ds_length - 1)
+        return variance(self.prices)
+
+    def get_feature_price_correlation(self, feature):
+        return correlation(list(map(lambda x: x[self._index_map[feature]], self.ds)), self.prices)
+
+    def show_scatter_plot(self, feature):
+        sorted_ds = sorted(self.ds, key=lambda x: x[self._index_map[feature]])
+        features = list(map(lambda x: x[self._index_map[feature]], sorted_ds))
+        prices = list(map(lambda x: x[self._index_map["price"]], sorted_ds))
+
+        plt.scatter(features, prices)
+        plt.title(f"Scatter-plot showing the relation between {feature} and price")
+        plt.ylabel("Price CHF")
+        plt.xlabel(feature)
+        plt.show()
 
 
 if __name__ == '__main__':
@@ -82,4 +89,10 @@ if __name__ == '__main__':
 
     ba = BasicAnalysis(data_set)
 
-    ba.show_average_price_per_feature("area", "Average price per sqare meters", "Square meters", "Average price CHF")
+    ba.show_average_price_per_feature("area", "Average price per square meters", "Square meters", "Average price CHF")
+    ba.show_average_price_per_feature("rooms", "Average price per number of rooms", "Number of rooms", "Average price CHF")
+
+    print(ba.get_feature_price_correlation("area"))
+    ba.show_scatter_plot("area")
+    print(ba.get_feature_price_correlation("rooms"))
+    ba.show_scatter_plot("rooms")

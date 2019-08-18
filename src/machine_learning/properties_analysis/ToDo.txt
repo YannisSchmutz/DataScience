@@ -3,7 +3,7 @@
 
 * Create an artificial neural network to predict the amount of rent for given attributes
  - Start easy using just the following attributes
-    - plz,canton,rooms,area,price
+    - canton,rooms,area,price
 
 * Improve the was data is taken out of the raw HTML
  - E.g the class identify strings would probably change every time the data is newly collected
