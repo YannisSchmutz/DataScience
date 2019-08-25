@@ -48,7 +48,7 @@ def normal_distribution_probability_density(x, mu=0, sigma=1):
 
 
     :param x:
-    :param mu: Mean or expectation of the distribution (
+    :param mu: Mean or expectation of the distribution
     :param sigma: Standard deviation
     :return:
 
@@ -84,9 +84,49 @@ def cumulative_distribution(x, mu=0, sigma=1):
     >>> cumulative_distribution(-2, -2, 0.5)
     0.5
 
+    :param x:
+    :param mu: Mean or expectation of the distribution
+    :param sigma: Standard deviation
     :return:
     """
     return (1 + math.erf((x - mu) / math.sqrt(2) / sigma)) / 2
+
+
+def inverse_cumulative_distribution(target_probability, mu=0, sigma=1, tolerance=0.00001):
+    """
+    Returns the x-axis value which would result to a given probability using the CDF.
+
+    :param target_probability:
+    :param mu: Mean or expectation of the distribution
+    :param sigma: Standard deviation
+    :param tolerance
+    :return:
+
+    >>> inverse_cumulative_distribution(0.5, 0, 1)
+    0.0
+    >>> inverse_cumulative_distribution(0.8, 0, 1)
+    0.842
+    >>> inverse_cumulative_distribution(0.1, 0, 1)
+    -1.282
+    """
+    if mu != 0 or sigma != 1:
+        return mu + sigma * inverse_cumulative_distribution(target_probability, tolerance=tolerance)
+
+    low_x = -10
+    high_x = 10
+    mid_x = (low_x + high_x) / 2.0
+    p = cumulative_distribution(mid_x, mu, sigma)
+
+    while abs(p - target_probability) > tolerance:
+        if p > target_probability:
+            high_x = mid_x
+        elif p < target_probability:
+            low_x = mid_x
+        else:
+            break
+        mid_x = (low_x + high_x) / 2.0
+        p = cumulative_distribution(mid_x, mu, sigma)
+    return round(mid_x, 3)
 
 
 if __name__ == "__main__":
