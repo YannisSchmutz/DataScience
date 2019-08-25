@@ -13,6 +13,8 @@ def mean(data_set):
 
     >>> mean([1,2,3,4,5])
     3.0
+    >>> mean([5,1,2,4,3])
+    3.0
     """
     return reduce(lambda x, y: x + y, data_set) / len(data_set)
 
@@ -24,7 +26,7 @@ def median(data_set):
     :return:
 
     Median of an even number of values
-    >>> median([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    >>> median([10, 7, 5, 1, 3, 6, 4, 8, 9, 2])
     5.5
 
     Median of an odd number of values
@@ -78,6 +80,8 @@ def percentile(data_set, p):
     Traceback (most recent call last):
       ...
     ValueError: p must me 0 < p <= 1
+    >>> percentile([1, 3, 2, 5, 8, 6, 4, 7, 10, 9], 0.7)
+    7
     """
     if p > 1:
         raise ValueError("p must me 0 < p <= 1")
