@@ -1,6 +1,9 @@
 from functools import reduce
 from collections import Counter
 
+import math
+import numpy as np
+
 
 def mean(data_set):
     """
@@ -89,7 +92,7 @@ def percentile(data_set, p):
 def mode(data_set):
     """
     Returns a list of values which appear the most in a given data set.
-    :param data_set:
+    :param data_set: List of numbers
     :return:
 
     >>> mode([1,1,1,1,1,1,2,2,3,3,4,4])
@@ -116,10 +119,22 @@ def data_range(data_set):
     return max(data_set) - min(data_set)
 
 
+def interquartile_range(data_set):
+    """
+    Returns the data range but between the
+    :param data_set: List of numbers
+    :return:
+
+    >>> interquartile_range([1,2,3,4,5,6,7,8])
+    4
+    """
+    return percentile(data_set, 0.75) - percentile(data_set, 0.25)
+
+
 def mean_deviation(data_set):
     """
-
-    :param data_set:
+    Returns mean deviation
+    :param data_set: List of numbers
     :return:
 
     >>> mean_deviation([1,2,3,4,5])
@@ -131,8 +146,8 @@ def mean_deviation(data_set):
 
 def median_deviation(data_set):
     """
-
-    :param data_set:
+    Returns median deviation
+    :param data_set: List of numbers
     :return:
 
     >>> median_deviation([1,5,7,19,22])
@@ -144,8 +159,8 @@ def median_deviation(data_set):
 
 def variance(data_set):
     """
-
-    :param data_set:
+    Returns the variance of a given data set
+    :param data_set: List of numbers
     :return:
 
     >>> variance([1,2,3,4,5,6,7,8,9,10])
@@ -157,6 +172,52 @@ def variance(data_set):
     """
     deviations = mean_deviation(data_set)
     return round(sum(map(lambda x: x * x, deviations)) / (len(data_set) - 1), 3)
+
+
+def standard_deviation(data_set):
+    """
+
+    :param data_set:
+    :return:
+    >>> standard_deviation([1,2,3,4,5])
+    1.581
+    """
+    return round(math.sqrt(variance(data_set)), 3)
+
+
+def covariance(data_set1, data_set2):
+    """
+    Returns the covariance of two data sets.
+
+    High value:         The data sets are some kind proportionally related (+/-)
+    Value near null:    The data sets do not depend on each other.
+
+    :param data_set1:
+    :param data_set2:
+    :return:
+    >>> covariance([1,2,3,4,5], [3,4,5,6,7])
+    2.5
+    """
+    n = len(data_set1)
+    return np.dot(mean_deviation(data_set1), mean_deviation(data_set2)) / (n - 1)
+
+
+def correlation(data_set1, data_set2):
+    """
+    Returns a value between -1 and 1.
+    Where a value near +/- 1 indicates a high correlation, a value near zero indicates a low correlation.
+
+    :param data_set1:
+    :param data_set2:
+    :return:
+    """
+    stdev1 = standard_deviation(data_set1)
+    stdev2 = standard_deviation(data_set2)
+
+    if stdev1 > 0 and stdev2 > 0:
+        return round(covariance(data_set1, data_set2) / stdev1 / stdev2, 3)
+    else:
+        return 0
 
 
 if __name__ == "__main__":
