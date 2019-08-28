@@ -105,5 +105,10 @@ venv.bak/
 
 # Latex stuff
 .aux
+.bbl
+.blg
+.lof
+.lot
+.out
 .gz
 .toc
