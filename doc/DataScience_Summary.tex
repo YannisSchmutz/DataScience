@@ -1,17 +1,22 @@
 \documentclass{article}
 
-% ****************************************************************
+% PACKAGES  ****************************************************************
 \usepackage{lipsum}		% Used to generate dummy-text (\lipsum[1])
 \usepackage[margin=2.54cm,includefoot]{geometry}		% Used to control margins
 
 \usepackage{graphicx} % allows to import images
 \usepackage{float}	% allows for control of float positions
 \usepackage{tikz} 	% Used to create trees
+\usepackage[hidelinks]{hyperref}	% allows for clickable references
 
+\usepackage[numbers,sort&compress]{natbib} 	% sorts the cites in increasing order automatically when referenced and compresses successive references
 
+\usepackage[english,german]{babel}		% Change language from english to german (order matters!)
 
-% Used for Header and Footer stuff
-\usepackage{fancyhdr}
+\usepackage{fancyhdr}	% Used for Header and Footer stuff
+% ****************************************************************
+
+% HEADER AND FOOTER STUFF ****************************************************************
 \pagestyle{fancy}
 \fancyhead{}	% clears header
 \fancyfoot{}	% clears footer
@@ -20,9 +25,16 @@
 \renewcommand{\footrulewidth}{1pt}		% add footer line by setting it to one
 % ****************************************************************
 
+% DEFINE LIST ITEM BULLETS ****************************************************************
+\renewcommand{\labelitemi}{$\bullet$}	% first list item
+\renewcommand{\labelitemii}{$\circ$}	% one-indented item
+\renewcommand{\labelitemiii}{$\diamond$}	% twice-indented item
+% ****************************************************************
+
+
 \begin{document}
 
-% ****************************************************************
+% TITLE PAGE ****************************************************************
 \begin{titlepage}
 	
 	\begin{center}
@@ -40,34 +52,105 @@
 	
 \end{titlepage}
 % ****************************************************************
+
+% PREFACE STUFF ****************************************************************
 \pagenumbering{roman}		% sets the page numbering to roman for the preface etc.
 \section*{Zusammenfassung}	% Adds a section without a number in front
 \addcontentsline{toc}{section}{\numberline{}Zusammenfassung}	% adds a section without a number in front to the ToC
 \cleardoublepage	% Finishes the current page so that the following page will always be odd.
 % ****************************************************************
+
+% TABLE OF CONTENTS ****************************************************************
+\renewcommand{\contentsname}{Inhaltsverzeichnis}	% Rename table of contents to the german version
 \tableofcontents		% adds table of contents (this needs to be compiled twice sometimes in order to update)
 \thispagestyle{empty}	% removes header & footer on this page
 \cleardoublepage	% Finishes the current page so that the following page will always be odd.
 % ****************************************************************
+
+% LIST OF FIGURES ****************************************************************
+%\renewcommand{\listfigurename}{Abbildungsverzeichnis}	% renames list of figures
+\listoffigures	% generates a list of figures
+\addcontentsline{toc}{section}{Abbildungsverzeichnis}	% Adds list of figures to the ToC
+\cleardoublepage
+% ****************************************************************
+
+% LIST OF TABLES ****************************************************************
+%\renewcommand{\listtablename}{Tabellenverzeichnis}
+\listoftables
+\addcontentsline{toc}{section}{Tabellenverzeichnis}
+\cleardoublepage
+% ****************************************************************
+
+% START OF REGULAR CHAPTERS ****************************************************************
 \setcounter{page}{1}		% Sets this page to the first one (and not the table of contents)
 \pagenumbering{arabic}	% Sets the page numbering back to arabic
 % ****************************************************************
+
+% ****************************************************************
 \section{Einleitung}\label{sec:intro}
-
 \lipsum[1]
+% ****************************************************************
 
+% ****************************************************************
+\newpage
 \section{Statistik}\label{sec:stat}
+\lipsum[1]
+% ****************************************************************
 
+% ****************************************************************
 \newpage
 \section{Probabilistik}
 \subsection{Bedingte Wahrscheinlichkeit}
+
 \subsubsection{Satz von Bayes}
 Verweis auf Kapitel \pageref{sec:stat}.
+% ****************************************************************
 
 
 
+% TRYOUT PART ****************************************************************
+\newpage
+\section{Tryout}\label{sec:tryout}
+
+\begin{figure}[H]	% H stands for here (place right here)
+	\centering
+	\includegraphics[height=5cm]{figures/tryout.png}
+	\caption[Optional optional]{Entscheidungsbaum}
+	\label{fig:tryout}
+\end{figure}
+
+Wie auf der Abbildung \ref{fig:tryout} zu sehen ist.....
 
 
+\begin{table}[H]
+	\centering
+	\label{tab:tryouttab}
+\caption[This is an optional caption, without reference]{Local caption, with reference}
+	\cite{ref:ds_1, ref:nn_1, ref:ai_1}	% Used to add cites (zitieren)
+
+	\begin{tabular}{l c r}
+		Area & Number of rooms & Price \\ \hline
+		80	& 4				& 1680 \\
+		100	& 5				& 2300 \\
+		50	& 2.5				& 1500 \\
+		
+	\end{tabular}
+\end{table}
+
+
+\begin{itemize}
+	\item This is an item
+	\item This is another item
+	\begin{itemize}
+		\item This is a further item
+		\item [blub] This is an item with a custom bullet point
+	\end{itemize}
+\end{itemize}
+
+\begin{enumerate}
+	\item This is a numbered item
+	\item And so on
+\end{enumerate}
 
 
 
@@ -86,5 +169,25 @@ Verweis auf Kapitel \pageref{sec:stat}.
 	;
 
 \end{tikzpicture}
+% ****************************************************************
+
+
+% REFERENCES ****************************************************************
+\cleardoublepage
+%\renewcommand{\bibname}{Referenzen}	% Rename the bibliography title
+\bibliographystyle{IEEEtran}	% Adds cites (Zitate)
+\addcontentsline{toc}{section}{Referenzen}
+% references can easily be generated using the OS X tool "BibDesk"
+% Make sure you build your LaTeX document in BibTeX after defining your references
+%	in order to make them valid.
+\bibliography{references/book_ref1.bib}
+% ****************************************************************
+
+% APPENDIX ****************************************************************
+\cleardoublepage
+\appendix
+\section{Cheatsheet}
+% ****************************************************************
+
 
 \end{document}
