@@ -1,35 +1,19 @@
 import math
 from matplotlib import pyplot as plt
-import random
 from collections import Counter
 from src.analytics.probability_functions import normal_distribution_probability_density as pdf
-
-
-"""
-mu = n*p
-sigma = sqrt(n*p*(1-p))
-
-
-"""
-
-
-def bernoulli_trial(p):
-    """
-
-    Returns 1 with the probability of p
-    Returns 0 with the probability of (1 - p)
-
-    :param p:
-    :return:
-    """
-    return 1 if random.random() < p else 0
-
-
-def binomial(n, p):
-    return sum(bernoulli_trial(p) for _ in range(n))
+from src.analytics.probability_functions import binomial
 
 
 def make_graph(p, n, nbr_of_samples):
+    """
+    This creates a graph displaying the binomial distribution as well as an approximation of the normal distribution.
+
+    :param p: Probability
+    :param n: Number of bernoulli-trials for each sample value
+    :param nbr_of_samples: Number of samples
+    :return:
+    """
 
     data = [binomial(n, p) for _ in range(nbr_of_samples)]
 
