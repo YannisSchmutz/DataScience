@@ -1,4 +1,5 @@
 import math
+import random
 
 
 def conditional_probability(a_and_b, b):
@@ -46,7 +47,6 @@ def normal_distribution_probability_density(x, mu=0, sigma=1):
     The area between two points (e.g xa, xb) is equal to the probability that a random value appears between
         those two given points.
 
-
     :param x:
     :param mu: Mean or expectation of the distribution
     :param sigma: Standard deviation
@@ -68,7 +68,10 @@ def normal_distribution_probability_density(x, mu=0, sigma=1):
 
 def cumulative_distribution(x, mu=0, sigma=1):
     """
-    Often called CDF. CDF is the integral of the PDF.
+    Often called CDF. CDF is the integral (so the area) of the PDF.
+
+    Returns the probability that a variable is below the given threshold x.
+
     CDF is always:
         * not-decreasing
         * lim x --> inf = 1
@@ -84,7 +87,7 @@ def cumulative_distribution(x, mu=0, sigma=1):
     >>> cumulative_distribution(-2, -2, 0.5)
     0.5
 
-    :param x:
+    :param x: Given threshold
     :param mu: Mean or expectation of the distribution
     :param sigma: Standard deviation
     :return:
@@ -127,6 +130,33 @@ def inverse_cumulative_distribution(target_probability, mu=0, sigma=1, tolerance
         mid_x = (low_x + high_x) / 2.0
         p = cumulative_distribution(mid_x, mu, sigma)
     return round(mid_x, 3)
+
+
+def bernoulli_trial(p):
+    """
+
+    Returns 1 with the probability of p
+    Returns 0 with the probability of (1 - p)
+
+    :param p: Number between 0 and 1
+    :return:
+
+    -> This method can't be tested
+    """
+    return 1 if random.random() < p else 0
+
+
+def binomial(n, p):
+    """
+    Returns the sum of n bernoulli-trials with the probability of p
+
+    :param n: Number of bernoulli-trials
+    :param p: Probability
+    :return:
+
+    -> This method can't be tested
+    """
+    return sum(bernoulli_trial(p) for _ in range(n))
 
 
 if __name__ == "__main__":
