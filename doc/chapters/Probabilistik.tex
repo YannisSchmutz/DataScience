@@ -1,0 +1,76 @@
+
+% ****************************************************************
+\newpage
+\section{Probabilistik}
+\subsection{Bedingte Wahrscheinlichkeit}
+
+Die bedingte Wahrscheinlichkeit ist die Wahrscheinlichkeit des Eintreten eines Ereignisses A unter der Bedingung, dass die Wahrscheinlichkeit für das Eintreten eines Ereignisses B bereits bekannt ist. Man spricht von \dq{A} unter der Bedingung B\dq. Oder auch $P(A|B)$.\\
+
+
+Sind zwei Ereignisse E, F voneinander \textbf{unabhängig}, so gilt:
+$$ P(E \cap F) = P(E)P(F) $$
+$$ P(E|F) = P(E)$$
+
+Sind jedoch zwei Ereignisse A, B \textbf{nicht unabhängig} so lautet die Formel für A unter der Bedingung B:
+	$$P(A|B) = \frac{P(A \cap B)}{P(B)}$$
+
+
+Daraus erschliesst sich:
+	$$P(A \cap B) = P(A|B)P(B)$$
+
+
+Das Aufzeichnen eines Wahrscheinlichkeitsbaumes hilft zur Veranschaulichung: \\
+
+\begin{figure}[H]
+	\centering
+	\label{fig:probability_tree}
+	\begin{forest}
+	%\label{fig:probability_tree}
+	for tree={circle,draw, s sep=3em}
+	[ 
+	    [$B$,edge label={node[midway,left] {$P(B)$}}
+	      [$A \cap B$,edge label={node[midway,left] {$P(A|B)$}} ] 
+	      [$\bar{A} \cap B$,edge label={node[midway,right] {$P(\bar{A}|B)$}}] 
+	    ]
+	    [$\bar{B}$,edge label={node[midway,right] {$P(\bar{B})$}}
+	      [$A \cap \bar{B}$, edge label={node[midway,left] {$P(A|\bar{B})$}}] 
+	      [$\bar{A} \cap \bar{B}$, edge label={node[midway,right] {$P(\bar{A}| \bar{B})$}}] 
+	  ] 
+	]
+	\end{forest}
+	\caption{Wahrscheinlichkeitsbaum}
+\end{figure}
+
+\subsubsection{Satz von Bayes}
+%Verweis auf Kapitel \pageref{sec:stat}.
+
+Der Satz von Bayes zeigt den Zusammenhang zwischen $P(A|B)$ und $P(B|A)$ auf:
+
+\begin{equation}
+\label{eq:bayes_theorem}
+	P(A|B) = \frac{P(A \cap B)}{P(B)} = \frac{P(B|A)P(A)}{P(B)}
+\end{equation}
+
+Diese Gleichung \ref{eq:bayes_theorem} entsteht, wenn man den Ausdruck $P(A \cap B)$ anhand den umgekehrten Wahrscheinlichkeitsbaums \ref{fig:inv_probability_tree} ausdrückt. 
+
+
+\begin{figure}[H]
+	\centering
+	\label{fig:inv_probability_tree}
+	\begin{forest}
+	for tree={circle,draw, s sep=3em}
+	[ 
+	    [$A$,edge label={node[midway,left] {$P(A)$}}
+	      [$A \cap B$,edge label={node[midway,left] {$P(B|A)$}} ] 
+	      [$A \cap \bar{B}$,edge label={node[midway,right] {$P(\bar{B}|A)$}}] 
+	    ]
+	    [$\bar{A}$,edge label={node[midway,right] {$P(\bar{A})$}}
+	      [$\bar{A} \cap B$, edge label={node[midway,left] {$P(B|\bar{A})$}}] 
+	      [$\bar{A} \cap \bar{B}$, edge label={node[midway,right] {$P(\bar{B}| \bar{A})$}}] 
+	  ] 
+	]
+	\end{forest}
+	\caption{Umgekehrter Wahrscheinlichkeitsbaum}
+\end{figure}
+% ****************************************************************
+
