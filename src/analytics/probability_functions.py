@@ -159,6 +159,123 @@ def binomial(n, p):
     return sum(bernoulli_trial(p) for _ in range(n))
 
 
+def normal_approximation_to_binomial(n, p):
+    """
+    Returns (mu, sigma)
+            (expected value, standard deviation)
+    :param n: Corresponds to number of bernoulli-trials
+    :param p: Probability
+    :return:
+
+    >>> normal_approximation_to_binomial(1000, 0.5)
+    500.0, 15.811
+    """
+    mu = n * p
+    sigma = math.sqrt(n * p * (1 - p))
+    return mu, round(sigma, 3)
+
+
+def normal_probability_above(low, mu=0, sigma=1):
+    """
+    Returns the probability that a variable is higher as a given threshold
+
+    :param low: Threshold
+    :param mu: Expected value
+    :param sigma: Standard deviation
+    :return:
+    """
+    return 1 - cumulative_distribution(low, mu, sigma)
+
+
+def normal_probability_between(low, high, mu=0, sigma=1):
+    """
+     Returns the probability that a variable is between two given thresholds.
+
+    :param low: Low-Threshold
+    :param high: High-Threshold
+    :param mu: Expected value
+    :param sigma: Standard deviation
+
+    :return:
+    """
+    return cumulative_distribution(high, mu, sigma) - cumulative_distribution(low, mu, sigma)
+
+
+def normal_probability_outside(low, high, mu=0, sigma=1):
+    """
+     Returns the probability that a variable is outside two given thresholds.
+
+    :param low: Low-Threshold
+    :param high: High-Threshold
+    :param mu: Expected value
+    :param sigma: Standard deviation
+
+    :return:
+    """
+    return cumulative_distribution(low, mu, sigma) + (1 - cumulative_distribution(high, mu, sigma))
+
+
+def normal_upper_bound(probability, mu=0, sigma=1):
+    """
+    Calculates z so that:   P(Z <= z) = probability
+
+    -> Returns a number z so that the chances of a random variable Z being below z
+        is equal to the given probability.
+
+    :param probability:
+    :param mu:
+    :param sigma:
+    :return:
+    """
+    return inverse_cumulative_distribution(probability, mu, sigma)
+
+
+def normal_lower_bound(probability, mu=0, sigma=1):
+    """
+    Calculates z so that:   P(Z >= z) = probability
+
+    -> Returns a number z so that the chances of a random variable Z being higher than z
+        is equal to the given probability.
+
+    :param probability:
+    :param mu:
+    :param sigma:
+    :return:
+        """
+    return inverse_cumulative_distribution(1 - probability, mu, sigma)
+
+
+def normal_two_sided_bounds(probability, mu=0, sigma=1):
+    """
+
+
+                Gauss
+                  |
+    -------|------+--------|-------
+    part_p |  probability  | part_p
+           |               |
+           v               v
+      lower_bound     upper_bound
+
+    :param probability:
+    :param mu:
+    :param sigma:
+    :return:
+    """
+    # This is the lowest/highest part probability
+    part_probability = (1 - probability) / 2.0
+
+    # "part_probability" should be above the higher threshold
+    # So "upper_bound" is a threshold where a variable Z will be higher by a chance of "part_probability"
+    upper_bound = normal_lower_bound(part_probability, mu, sigma)
+
+    # "part_probability" should be below the lower threshold
+    # So "lower_bound" is a threshold where a Variable Z will be smaller by a chance of "part_probability"
+    lower_bound = normal_upper_bound(part_probability, mu, sigma)
+
+    return lower_bound, upper_bound
+
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
