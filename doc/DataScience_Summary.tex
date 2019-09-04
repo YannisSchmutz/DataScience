@@ -1,8 +1,9 @@
 \documentclass{article}
 
-% PACKAGES  ****************************************************************
+% PACKAGES  ============================================================
 \usepackage{lipsum}		% Used to generate dummy-text (\lipsum[1])
 \usepackage[margin=2.54cm,includefoot]{geometry}		% Used to control margins
+\usepackage{scrextend}	% To be able to use \begin{addmargin}
 
 \usepackage{graphicx} % allows to import images
 \usepackage{float}	% allows for control of float positions
@@ -25,27 +26,27 @@
 \usepackage{fancyhdr}	% Used for Header and Footer stuff
 
 \usepackage{xfrac}	% allows for slanted fractions 
-% ****************************************************************
+% ============================================================
 
-% HEADER AND FOOTER STUFF ****************************************************************
+% HEADER AND FOOTER STUFF ============================================================
 \pagestyle{fancy}
 \fancyhead{}	% clears header
 \fancyfoot{}	% clears footer
 \fancyfoot[R]{\thepage}	% sets position right
 \renewcommand{\headrulewidth}{0pt}	% removes header line by setting it to zero
 \renewcommand{\footrulewidth}{1pt}		% add footer line by setting it to one
-% ****************************************************************
+% ============================================================
 
-% DEFINE LIST ITEM BULLETS ****************************************************************
+% DEFINE LIST ITEM BULLETS ============================================================
 \renewcommand{\labelitemi}{$\bullet$}	% first list item
 \renewcommand{\labelitemii}{$\circ$}	% one-indented item
 \renewcommand{\labelitemiii}{$\diamond$}	% twice-indented item
-% ****************************************************************
+% ============================================================
 
 
 \begin{document}
 
-% TITLE PAGE ****************************************************************
+% TITLE PAGE ============================================================
 \begin{titlepage}
 	
 	\begin{center}
@@ -62,51 +63,117 @@
 	\end{center}
 	
 \end{titlepage}
-% ****************************************************************
+% ============================================================
 
-% PREFACE STUFF ****************************************************************
+% PREFACE STUFF ============================================================
 \pagenumbering{roman}		% sets the page numbering to roman for the preface etc.
 \section*{Zusammenfassung}	% Adds a section without a number in front
 \addcontentsline{toc}{section}{\numberline{}Zusammenfassung}	% adds a section without a number in front to the ToC
 \cleardoublepage	% Finishes the current page so that the following page will always be odd.
 % ****************************************************************
 
-% TABLE OF CONTENTS ****************************************************************
+% TABLE OF CONTENTS ============================================================
 \renewcommand{\contentsname}{Inhaltsverzeichnis}	% Rename table of contents to the german version
 \tableofcontents		% adds table of contents (this needs to be compiled twice sometimes in order to update)
 \thispagestyle{empty}	% removes header & footer on this page
 \cleardoublepage	% Finishes the current page so that the following page will always be odd.
-% ****************************************************************
+% ============================================================
 
-% LIST OF FIGURES ****************************************************************
+% LIST OF FIGURES ============================================================
 %\renewcommand{\listfigurename}{Abbildungsverzeichnis}	% renames list of figures
 \listoffigures	% generates a list of figures
 \addcontentsline{toc}{section}{Abbildungsverzeichnis}	% Adds list of figures to the ToC
 \cleardoublepage
-% ****************************************************************
+% ============================================================
 
-% LIST OF TABLES ****************************************************************
+% LIST OF TABLES ============================================================
 %\renewcommand{\listtablename}{Tabellenverzeichnis}
 \listoftables
 \addcontentsline{toc}{section}{Tabellenverzeichnis}
 \cleardoublepage
-% ****************************************************************
+% ============================================================
 
-% START OF REGULAR CHAPTERS ****************************************************************
+% START OF REGULAR CHAPTERS ============================================================
 \setcounter{page}{1}		% Sets this page to the first one (and not the table of contents)
 \pagenumbering{arabic}	% Sets the page numbering back to arabic
 
 \include{chapters/Einleitung}
 \include{chapters/Statistik}
 \include{chapters/Probabilistik}
+% ============================================================
+\newpage
+\section{Machine Learning}
+\label{sec:ml}
+
+\subsection{Übersicht}
+
+\begin{figure}[H]
+	\centering
+	\label{fig:ml_overview}
+	\begin{forest}
+	for tree={draw, s sep=3em}
+	[Machine Learning
+	    [Überwachtes Lernen
+	        [Klassifizierung
+	            [Naive Bayes]
+	             [k-N-N]
+	             [NN]
+	        ]
+	        [Regression
+	            [Linear Regression]
+	            [NN]
+	        ]
+	    ]
+	    [Unüberwachtes Lernen
+	        [Clustering
+	            [K-means]
+	        ]
+	        [Assoziierung]
+	    ]
+	]
+	\end{forest}
+	\caption{Machine Learning Kategorien}
+\end{figure}
+
+% #################################
+\subsubsection{Überwachtes Lernen}
+\begin{flushleft}
+
+Überwachte Lern-Algorithmen probieren Beziehungen und Abhängigkeiten zwischen den Input-Features und des zu erzielenden Outputs zu erschliessen. Dies unter der Verwendung von \textbf{beschrifteten Daten}. Diese können zu Trainingszwecken verwendet werden. Jeder Satz an Daten besteht aus Input-Werten sowie einem dazugehörigen bekannten Output-Wert. Nach dem Trainieren des Algorithmus versucht dieser anhand von \textbf{neuen} Input-Features den dazugehörigen \textbf{unbekannten} Output vorherzusagen.
+\linebreak
+
+Das überwachte Lernen kann in zwei Kategorien unterteilt werden:
+
+\begin{itemize}
+	\item \textbf{Klassifizierung:} Ziel der Klassifizierung ist es, diskrete Werte vorherzusagen (bspw. Wahr/ Falsch, Spam-Mail/ normales Mail). 
+	\item \textbf{Regression:} Das Ziel der Regression ist die Vorhersage kontinuierlicher Werte (bspw. Hauspreise in Abhängigkeit von Fläche und Anzahl Zimmer).
+\end{itemize}
+
+\end{flushleft}
+
+\subsubsection{Unüberwachtes Lernen}
+\begin{flushleft}
+
+Im unüberwachten Lernen stehen den Algorithmen \textbf{keine} beschrifteten Daten zur Verfügung. Die Algorithmen versuchen eigenständig Pattern in den zu behandelnden Daten zu erkennen und sie dadurch beispielsweise gruppieren zu können.
+\end{flushleft}
+
+% #################################
+\subsection{Algorithmen}
+\subsubsection{Naive Bayes}
+\begin{flushleft}
+\end{flushleft}
+
+
+% ============================================================
+
 
 \include{chapters/Tryout}
-% ****************************************************************
+% ============================================================
 
 
 
 
-% REFERENCES ****************************************************************
+% REFERENCES ============================================================
 \cleardoublepage
 %\renewcommand{\bibname}{Referenzen}	% Rename the bibliography title
 \bibliographystyle{IEEEtran}	% Adds cites (Zitate)
@@ -115,13 +182,13 @@
 % Make sure you build your LaTeX document in BibTeX after defining your references
 %	in order to make them valid.
 \bibliography{references/book_ref1.bib}
-% ****************************************************************
+% ============================================================
 
-% APPENDIX ****************************************************************
+% APPENDIX ============================================================
 \cleardoublepage
 \appendix
 \section{Cheatsheet}
-% ****************************************************************
+% ============================================================
 
 
 \end{document}
