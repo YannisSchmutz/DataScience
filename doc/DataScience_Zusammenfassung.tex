@@ -10,18 +10,20 @@
 \usepackage{tikz} 	% Used to create trees
 \usepackage{pgfplots}	% to create plots
 
-\usepackage{forest}% Used to create trees
+\usepackage{forest} % Used to create trees
 
-\usepackage{amsmath}	% to use cases in equations
+\usepackage{amsmath}	 % to use cases in equations
 
 \usepackage[hidelinks]{hyperref}	% allows for clickable references
 
 \usepackage[numbers,sort&compress]{natbib} 	% sorts the cites in increasing order automatically when referenced and compresses successive references
 
+%\usepackage[applemac]{inputenc}
+\usepackage[utf8]{inputenc}		% Be able to use umlaute
+
 \usepackage[ngerman]{babel}
 %\usepackage[english,german]{babel}		% Change language from english to german (order matters!)
 %\usepackage{ngerman}
-\usepackage[applemac]{inputenc}
 
 \usepackage{fancyhdr}	% Used for Header and Footer stuff
 
@@ -97,7 +99,7 @@
 \setcounter{page}{1}		% Sets this page to the first one (and not the table of contents)
 \pagenumbering{arabic}	% Sets the page numbering back to arabic
 
-\include{chapters/Einleitung}
+%\include{chapters/E}
 \include{chapters/Statistik}
 \include{chapters/Probabilistik}
 % ============================================================
@@ -105,7 +107,9 @@
 \section{Machine Learning}
 \label{sec:ml}
 
-\subsection{Übersicht}
+\subsection{Uebersicht}
+
+√§
 
 \begin{figure}[H]
 	\centering
@@ -113,7 +117,7 @@
 	\begin{forest}
 	for tree={draw, s sep=3em}
 	[Machine Learning
-	    [Überwachtes Lernen
+	    [Ueberwachtes Lernen
 	        [Klassifizierung
 	            [Naive Bayes]
 	             [k-N-N]
@@ -124,7 +128,7 @@
 	            [NN]
 	        ]
 	    ]
-	    [Unüberwachtes Lernen
+	    [Unueberwachtes Lernen
 	        [Clustering
 	            [K-means]
 	        ]
@@ -136,25 +140,25 @@
 \end{figure}
 
 % #################################
-\subsubsection{Überwachtes Lernen}
+\subsubsection{Ueberwachtes Lernen}
 \begin{flushleft}
 
-Überwachte Lern-Algorithmen probieren Beziehungen und Abhängigkeiten zwischen den Input-Features und des zu erzielenden Outputs zu erschliessen. Dies unter der Verwendung von \textbf{beschrifteten Daten}. Diese können zu Trainingszwecken verwendet werden. Jeder Satz an Daten besteht aus Input-Werten sowie einem dazugehörigen bekannten Output-Wert. Nach dem Trainieren des Algorithmus versucht dieser anhand von \textbf{neuen} Input-Features den dazugehörigen \textbf{unbekannten} Output vorherzusagen.
+Ueberwachte Lern-Algorithmen probieren Beziehungen und Abhaengigkeiten zwischen den Input-Features und des zu erzielenden Outputs zu erschliessen. Dies unter der Verwendung von \textbf{beschrifteten Daten}. Diese koennen zu Trainingszwecken verwendet werden. Jeder Satz an Daten besteht aus Input-Werten sowie einem dazugehoerigen bekannten Output-Wert. Nach dem Trainieren des Algorithmus versucht dieser anhand von \textbf{neuen} Input-Features den dazugehoerigen \textbf{unbekannten} Output vorherzusagen.
 \linebreak
 
-Das überwachte Lernen kann in zwei Kategorien unterteilt werden:
+Das ueberwachte Lernen kann in zwei Kategorien unterteilt werden:
 
 \begin{itemize}
 	\item \textbf{Klassifizierung:} Ziel der Klassifizierung ist es, diskrete Werte vorherzusagen (bspw. Wahr/ Falsch, Spam-Mail/ normales Mail). 
-	\item \textbf{Regression:} Das Ziel der Regression ist die Vorhersage kontinuierlicher Werte (bspw. Hauspreise in Abhängigkeit von Fläche und Anzahl Zimmer).
+	\item \textbf{Regression:} Das Ziel der Regression ist die Vorhersage kontinuierlicher Werte (bspw. Hauspreise in Abhaengigkeit von Flaeche und Anzahl Zimmer).
 \end{itemize}
 
 \end{flushleft}
 
-\subsubsection{Unüberwachtes Lernen}
+\subsubsection{Unueberwachtes Lernen}
 \begin{flushleft}
 
-Im unüberwachten Lernen stehen den Algorithmen \textbf{keine} beschrifteten Daten zur Verfügung. Die Algorithmen versuchen eigenständig Pattern in den zu behandelnden Daten zu erkennen und sie dadurch beispielsweise gruppieren zu können.
+Im unueberwachten Lernen stehen den Algorithmen \textbf{keine} beschrifteten Daten zur Verfuegung. Die Algorithmen versuchen eigenstaendig Pattern in den zu behandelnden Daten zu erkennen und sie dadurch beispielsweise gruppieren zu koennen.
 \end{flushleft}
 
 % #################################
@@ -163,11 +167,12 @@ Im unüberwachten Lernen stehen den Algorithmen \textbf{keine} beschrifteten Date
 \begin{flushleft}
 \end{flushleft}
 
+% √§√∂√º√Ñ√ñ√ú
 
 % ============================================================
 
 
-\include{chapters/Tryout}
+%\include{chapters/Tryout}
 % ============================================================
 
 
@@ -181,7 +186,7 @@ Im unüberwachten Lernen stehen den Algorithmen \textbf{keine} beschrifteten Date
 % references can easily be generated using the OS X tool "BibDesk"
 % Make sure you build your LaTeX document in BibTeX after defining your references
 %	in order to make them valid.
-\bibliography{references/book_ref1.bib}
+\bibliography{references/book_ref1}
 % ============================================================
 
 % APPENDIX ============================================================
