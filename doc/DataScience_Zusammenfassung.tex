@@ -18,16 +18,16 @@
 
 \usepackage[numbers,sort&compress]{natbib} 	% sorts the cites in increasing order automatically when referenced and compresses successive references
 
-%\usepackage[applemac]{inputenc}
 \usepackage[utf8]{inputenc}		% Be able to use umlaute
 
 \usepackage[ngerman]{babel}
-%\usepackage[english,german]{babel}		% Change language from english to german (order matters!)
-%\usepackage{ngerman}
 
 \usepackage{fancyhdr}	% Used for Header and Footer stuff
 
 \usepackage{xfrac}	% allows for slanted fractions 
+
+\usepackage{pgfplots}	% Used for Linear regression plot
+
 % ============================================================
 
 % HEADER AND FOOTER STUFF ============================================================
@@ -99,7 +99,7 @@
 \setcounter{page}{1}		% Sets this page to the first one (and not the table of contents)
 \pagenumbering{arabic}	% Sets the page numbering back to arabic
 
-%\include{chapters/E}
+\include{chapters/Einleitung}
 \include{chapters/Statistik}
 \include{chapters/Probabilistik}
 % ============================================================
@@ -107,9 +107,8 @@
 \section{Machine Learning}
 \label{sec:ml}
 
-\subsection{Uebersicht}
+\subsection{Übersicht}
 
-ä
 
 \begin{figure}[H]
 	\centering
@@ -117,7 +116,7 @@
 	\begin{forest}
 	for tree={draw, s sep=3em}
 	[Machine Learning
-	    [Ueberwachtes Lernen
+	    [Überwachtes Lernen
 	        [Klassifizierung
 	            [Naive Bayes]
 	             [k-N-N]
@@ -128,7 +127,7 @@
 	            [NN]
 	        ]
 	    ]
-	    [Unueberwachtes Lernen
+	    [Unüberwachtes Lernen
 	        [Clustering
 	            [K-means]
 	        ]
@@ -140,17 +139,17 @@
 \end{figure}
 
 % #################################
-\subsubsection{Ueberwachtes Lernen}
+\subsubsection{Überwachtes Lernen}
 \begin{flushleft}
 
-Ueberwachte Lern-Algorithmen probieren Beziehungen und Abhaengigkeiten zwischen den Input-Features und des zu erzielenden Outputs zu erschliessen. Dies unter der Verwendung von \textbf{beschrifteten Daten}. Diese koennen zu Trainingszwecken verwendet werden. Jeder Satz an Daten besteht aus Input-Werten sowie einem dazugehoerigen bekannten Output-Wert. Nach dem Trainieren des Algorithmus versucht dieser anhand von \textbf{neuen} Input-Features den dazugehoerigen \textbf{unbekannten} Output vorherzusagen.
+Überwachte Lern-Algorithmen probieren Beziehungen und Abhängigkeiten zwischen den Input-Features und des zu erzielenden Outputs zu erschliessen. Dies unter der Verwendung von \textbf{beschrifteten Daten}. Diese können zu Trainingszwecken verwendet werden. Jeder Satz an Daten besteht aus Input-Werten sowie einem dazugehörigen bekannten Output-Wert. Nach dem Trainieren des Algorithmus versucht dieser anhand von \textbf{neuen} Input-Features den dazugehörigen \textbf{unbekannten} Output vorherzusagen.
 \linebreak
 
-Das ueberwachte Lernen kann in zwei Kategorien unterteilt werden:
+Das überwachte Lernen kann in zwei Kategorien unterteilt werden:
 
 \begin{itemize}
 	\item \textbf{Klassifizierung:} Ziel der Klassifizierung ist es, diskrete Werte vorherzusagen (bspw. Wahr/ Falsch, Spam-Mail/ normales Mail). 
-	\item \textbf{Regression:} Das Ziel der Regression ist die Vorhersage kontinuierlicher Werte (bspw. Hauspreise in Abhaengigkeit von Flaeche und Anzahl Zimmer).
+	\item \textbf{Regression:} Das Ziel der Regression ist die Vorhersage kontinuierlicher Werte (bspw. Hauspreise in Abhängigkeit von Flaeche und Anzahl Zimmer).
 \end{itemize}
 
 \end{flushleft}
@@ -158,16 +157,63 @@ Das ueberwachte Lernen kann in zwei Kategorien unterteilt werden:
 \subsubsection{Unueberwachtes Lernen}
 \begin{flushleft}
 
-Im unueberwachten Lernen stehen den Algorithmen \textbf{keine} beschrifteten Daten zur Verfuegung. Die Algorithmen versuchen eigenstaendig Pattern in den zu behandelnden Daten zu erkennen und sie dadurch beispielsweise gruppieren zu koennen.
+Im unüberwachten Lernen stehen den Algorithmen \textbf{keine} beschrifteten Daten zur Verfügung. Die Algorithmen versuchen eigenständig Pattern in den zu behandelnden Daten zu erkennen und sie dadurch beispielsweise gruppieren zu können.
 \end{flushleft}
 
 % #################################
-\subsection{Algorithmen}
-\subsubsection{Naive Bayes}
+
+% ============================================================
+\newpage
+\section{Machine Learning Algorithmen}
+\subsection{Linear Regression}
+
+\begin{tikzpicture}
+\begin{axis} [
+	axis lines = left, % Only displays axis on left and bottom (not whole box)
+	ymin = 0,	% y-axis shall always start at zero
+	xlabel = $x$,
+	ylabel = $f(x)$,
+	mark=*,
+	scatter/classes={%	Defines the point appearance for the scatter plot
+		a={blue}%,
+		%b={mark=triangle*,red},
+		%c={mark=o,draw=black}
+		}
+	]
+
+\addplot [
+	domain = 0:60, 	% Range for the value x
+	samples = 100,	% Determines the number of points in the interval defined by domain. 
+	color = red,	% Color of the
+	] {0.6*x + 10};
+\addlegendentry {$mx + q$}
+
+\addplot [only marks, scatter, scatter src=explicit symbolic]
+	table [meta=class] {		% meta defines the column to use for the class of the point
+		x		y		class
+		10		20	a
+		10		13		a
+		20	20	a
+		20	25		a
+		30	26	a
+		30	33	a
+		40	33
+		40	40
+		50	44
+		50	56
+		60	40
+	};
+
+\end{axis}
+\end{tikzpicture}
+
+
+
+\subsection{Naive Bayes}
+
 \begin{flushleft}
 \end{flushleft}
 
-% äöüÄÖÜ
 
 % ============================================================
 
