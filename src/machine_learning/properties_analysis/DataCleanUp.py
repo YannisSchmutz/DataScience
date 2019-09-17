@@ -181,6 +181,7 @@ def clean_umlaut(string):
     :param string:
     :return:
     """
+    # TODO: This would still fail for é,è ê etc. -> Encode this properly! (e.g UTF-8)
     return string.replace('Ã¤', 'ä').replace('Ã¶', 'ö').replace('Ã¼', 'ü')
 
 
