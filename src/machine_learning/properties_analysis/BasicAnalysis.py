@@ -2,8 +2,10 @@ import csv
 from functools import reduce
 from collections import Counter, defaultdict
 from matplotlib import pyplot as plt
+import matplotlib.lines as mlines
+import matplotlib.transforms as mtransforms
 from pprint import pprint
-from src.analytics.statistical_functions import variance, correlation
+from src.analytics.statistical_functions import variance, correlation, mean, get_linear_regression_function
 
 
 class BasicAnalysis:
@@ -23,6 +25,11 @@ class BasicAnalysis:
                            'area': 6,
                            'price': 7,
                            }
+
+    def _is_feature_rational(self, feature):
+        if feature == 'area' or feature == 'rooms' or feature == 'price':
+            return True
+        return False
 
     def show_prices_boxplot(self):
         plt.boxplot(self.prices)
@@ -60,17 +67,27 @@ class BasicAnalysis:
         return variance(self.prices)
 
     def get_feature_price_correlation(self, feature):
+        if not self._is_feature_rational(feature):
+            raise ValueError(f"The given feature {feature} can't be used to calculate correlation.")
         return correlation(list(map(lambda x: x[self._index_map[feature]], self.ds)), self.prices)
 
-    def show_scatter_plot(self, feature):
+    def show_scatter_plot(self, feature, rotation=45, include_regression_line=True):
         sorted_ds = sorted(self.ds, key=lambda x: x[self._index_map[feature]])
         features = list(map(lambda x: x[self._index_map[feature]], sorted_ds))
         prices = list(map(lambda x: x[self._index_map["price"]], sorted_ds))
 
         plt.scatter(features, prices)
+
+        if include_regression_line:
+            x_range = range(0, int(max(features)))
+            lin_reg_func = get_linear_regression_function(features, prices)
+            y = list(map(lin_reg_func, x_range))
+            plt.plot(x_range, y, color='red')
+
         plt.title(f"Scatter-plot showing the relation between {feature} and price")
         plt.ylabel("Price CHF")
         plt.xlabel(feature)
+        plt.xticks(rotation=rotation)
         plt.show()
 
 
