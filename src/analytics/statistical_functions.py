@@ -224,6 +224,46 @@ def correlation(data_set1, data_set2):
         return 0
 
 
+def get_linear_regression_parameters(x_values, y_values):
+    """
+    >>> get_linear_regression_parameters([1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10])
+    (1.0, 0.0)
+
+    >>> get_linear_regression_parameters(range(0,10), list(map(lambda x: x*2, range(0,10))))
+    (2.0, 0.0)
+
+    >>> get_linear_regression_parameters(range(0,10), list(map(lambda x: x*2 + 3, range(0,10))))
+    (2.0, 3.0)
+
+    >>> get_linear_regression_parameters(range(0,10), list(map(lambda x: x*2 - 1, range(0,10))))
+    (2.0, -1.0)
+
+    :param x_values: List of numbers
+    :param y_values: List of numbners
+    :return:
+    """
+    mean_x = mean(x_values)
+    mean_y = mean(y_values)
+    numerator = sum(map(lambda i: i[0] * i[1], list(zip([x - mean_x for x in x_values],
+                                                        [y - mean_y for y in y_values]))))
+    denominator = sum(map(lambda x: x * x, [x - mean_x for x in x_values]))
+    m = numerator / denominator
+    q = mean_y - m * mean_x
+    return m, q
+
+
+def get_linear_regression_function(x_values, y_values):
+    """
+
+    :param x_values:
+    :param y_values:
+    :return:
+    """
+    m, q = get_linear_regression_parameters(x_values, y_values)
+    f = lambda x: m*x + q
+    return f
+
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
