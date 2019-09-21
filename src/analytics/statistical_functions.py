@@ -224,22 +224,22 @@ def correlation(data_set1, data_set2):
         return 0
 
 
-def get_linear_regression_parameters(x_values, y_values):
+def get_simple_linear_regression_parameters(x_values, y_values):
     """
-    >>> get_linear_regression_parameters([1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10])
+    >>> get_simple_linear_regression_parameters([1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10])
     (1.0, 0.0)
 
-    >>> get_linear_regression_parameters(range(0,10), list(map(lambda x: x*2, range(0,10))))
+    >>> get_simple_linear_regression_parameters(range(0,10), list(map(lambda x: x*2, range(0,10))))
     (2.0, 0.0)
 
-    >>> get_linear_regression_parameters(range(0,10), list(map(lambda x: x*2 + 3, range(0,10))))
+    >>> get_simple_linear_regression_parameters(range(0,10), list(map(lambda x: x*2 + 3, range(0,10))))
     (2.0, 3.0)
 
-    >>> get_linear_regression_parameters(range(0,10), list(map(lambda x: x*2 - 1, range(0,10))))
+    >>> get_simple_linear_regression_parameters(range(0,10), list(map(lambda x: x*2 - 1, range(0,10))))
     (2.0, -1.0)
 
     :param x_values: List of numbers
-    :param y_values: List of numbners
+    :param y_values: List of numbers
     :return:
     """
     mean_x = mean(x_values)
@@ -252,14 +252,14 @@ def get_linear_regression_parameters(x_values, y_values):
     return m, q
 
 
-def get_linear_regression_function(x_values, y_values):
+def get_simple_linear_regression_function(x_values, y_values):
     """
 
     :param x_values:
     :param y_values:
     :return:
     """
-    m, q = get_linear_regression_parameters(x_values, y_values)
+    m, q = get_simple_linear_regression_parameters(x_values, y_values)
     f = lambda x: m*x + q
     return f
 

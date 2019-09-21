@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 import matplotlib.lines as mlines
 import matplotlib.transforms as mtransforms
 from pprint import pprint
-from src.analytics.statistical_functions import variance, correlation, mean, get_linear_regression_function
+from src.analytics.statistical_functions import variance, correlation, mean, get_simple_linear_regression_function
 
 
 class BasicAnalysis:
@@ -80,7 +80,7 @@ class BasicAnalysis:
 
         if include_regression_line:
             x_range = range(0, int(max(features)))
-            lin_reg_func = get_linear_regression_function(features, prices)
+            lin_reg_func = get_simple_linear_regression_function(features, prices)
             y = list(map(lin_reg_func, x_range))
             plt.plot(x_range, y, color='red')
 
