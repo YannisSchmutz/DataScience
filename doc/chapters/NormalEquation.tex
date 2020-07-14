@@ -1,0 +1,20 @@
+\newpage
+\section{Normal Equation}
+\begin{flushleft}
+
+Die Normal Equation ist eine Alternative zum Gradient Descent und rechnet sich wie folgt:
+
+$$ \Theta = (X^{T}X)^{-1}X^{T}y $$
+
+Unterschied zu Gradient Descent:
+\begin{table}[h]
+	\begin{tabular}{|l|l|}
+		\hline
+		{\textbf{Gradient Descent}} 		& {\textbf{Normal Equation}} 		\\ \hline
+		Alpha muss gewählt werden       & Alpha muss nicht gewählt werden   \\ \hline
+		Benötigt viele Iterationen      & Benötigt keine Iterationen        \\ \hline
+		$O(kn^{2})$                     & $O(n^{3})$                        \\ \hline
+		Auch für grosses n performant   & Langsam für grosses n             \\ \hline
+	\end{tabular}
+\end{table}
+\end{flushleft}

@@ -28,6 +28,8 @@
 
 \usepackage{pgfplots}	% Used for Linear regression plot
 
+%\usepackage[table]  % Used for tables
+
 % ============================================================
 
 % HEADER AND FOOTER STUFF ============================================================
@@ -45,6 +47,13 @@
 \renewcommand{\labelitemiii}{$\diamond$}	% twice-indented item
 % ============================================================
 
+
+% TODO: Diese beiden sollten jeweils das \begin{flushleft} erstzen. 
+% Jedoch ist der Text dann im Blocksatz, wenn flushleft fehlt...
+%Einrücken von Absätzen deaktivieren
+\setlength{\parindent}{0pt}
+%Zeilenabstand bei Abstätzen
+\usepackage{parskip}
 
 \begin{document}
 
@@ -102,136 +111,16 @@
 \include{chapters/Einleitung}
 \include{chapters/Statistik}
 \include{chapters/Probabilistik}
-% ============================================================
-\newpage
-\section{Machine Learning}
-\label{sec:ml}
+\include{chapters/FeatureScaling}
+\include{chapters/MachineLearning}
+\include{chapters/GradientDescent}
 
-\subsection{Übersicht}
-
-
-\begin{figure}[H]
-	\centering
-	\label{fig:ml_overview}
-	\begin{forest}
-	for tree={draw, s sep=3em}
-	[Machine Learning
-	    [Überwachtes Lernen
-	        [Klassifizierung
-	            [Naive Bayes]
-	             [k-N-N]
-	             [NN]
-	        ]
-	        [Regression
-	            [Linear Regression]
-	            [NN]
-	        ]
-	    ]
-	    [Unüberwachtes Lernen
-	        [Clustering
-	            [K-means]
-	        ]
-	        [Assoziierung]
-	    ]
-	]
-	\end{forest}
-	\caption{Machine Learning Kategorien}
-\end{figure}
-
-% #################################
-\subsubsection{Überwachtes Lernen}
-\begin{flushleft}
-
-Überwachte Lern-Algorithmen probieren Beziehungen und Abhängigkeiten zwischen den Input-Features und des zu erzielenden Outputs zu erschliessen. Dies unter der Verwendung von \textbf{beschrifteten Daten}. Diese können zu Trainingszwecken verwendet werden. Jeder Satz an Daten besteht aus Input-Werten sowie einem dazugehörigen bekannten Output-Wert. Nach dem Trainieren des Algorithmus versucht dieser anhand von \textbf{neuen} Input-Features den dazugehörigen \textbf{unbekannten} Output vorherzusagen.
-\linebreak
-
-Das überwachte Lernen kann in zwei Kategorien unterteilt werden:
-
-\begin{itemize}
-	\item \textbf{Klassifizierung:} Ziel der Klassifizierung ist es, diskrete Werte vorherzusagen (bspw. Wahr/ Falsch, Spam-Mail/ normales Mail). 
-	\item \textbf{Regression:} Das Ziel der Regression ist die Vorhersage kontinuierlicher Werte (bspw. Hauspreise in Abhängigkeit von Flaeche und Anzahl Zimmer).
-\end{itemize}
-
-\end{flushleft}
-
-\subsubsection{Unueberwachtes Lernen}
-\begin{flushleft}
-
-Im unüberwachten Lernen stehen den Algorithmen \textbf{keine} beschrifteten Daten zur Verfügung. Die Algorithmen versuchen eigenständig Pattern in den zu behandelnden Daten zu erkennen und sie dadurch beispielsweise gruppieren zu können.
-\end{flushleft}
-
-% #################################
+\include{chapters/NormalEquation}
+\include{chapters/LinearRegression}
+\include{chapters/LogisticRegression}
 
 % ============================================================
-\newpage
-\section{Machine Learning Algorithmen}
-\subsection{Linear Regression}
 
-Die lineare Regression ist ein Verfahren welches versucht, eine abhängige Variable durch eine oder mehrere unabhängige Variablen zu erklären.
-
-\subsubsection{Simple lineare Regression}
-
-Die simple lineare Regression arbeitet lediglich im zweidimensionalen Raum.
-
-\begin{tikzpicture}
-\begin{axis} [
-	axis lines = left, % Only displays axis on left and bottom (not whole box)
-	ymin = 0,	% y-axis shall always start at zero
-	xlabel = $x$,
-	ylabel = $f(x)$,
-	mark=*,
-	scatter/classes={%	Defines the point appearance for the scatter plot
-		a={blue}%,
-		%b={mark=triangle*,red},
-		%c={mark=o,draw=black}
-		}
-	]
-
-\addplot [
-	domain = 0:60, 	% Range for the value x
-	samples = 100,	% Determines the number of points in the interval defined by domain. 
-	color = red,	% Color of the
-	] {0.83*x + 10.44};
-\addlegendentry {$mx + q$}
-
-\addplot [only marks, scatter, scatter src=explicit symbolic]
-	table [meta=class] {		% meta defines the column to use for the class of the point
-		x		y		class
-		10		20	a
-		10		15		a
-		15		17		a
-		20	21		a
-		20	31		a
-		25		40	a
-		30	27		a
-		35	40	a
-		30	55	a
-		40	45	a
-		40	37		a
-		45	52		a
-		50	55	a
-		50	45	a
-		55	50	a
-		60	65	a
-		
-	};
-
-\end{axis}
-\end{tikzpicture}
-
-Die Steigung [m] sowie der y-Achsenabschnitt [q] lassen sich wie folgt berechnen:
-
-$$m = \dfrac{\sum_{i=1}^n (x_{i} - \bar{x})(y_{i} - \bar{y})}
-                       {\sum_{i=1}^n (x_{i} - \bar{x})^{2}}$$
-
-$$q = \bar{y} - m\bar{x}$$
-
-Wobei die werte $\bar{x}$, $\bar{y}$ den arithmetischen Mitteln der Definitions- und Bildmenge entsprechen.
-
-\subsection{Naive Bayes}
-
-\begin{flushleft}
-\end{flushleft}
 
 
 % ============================================================
