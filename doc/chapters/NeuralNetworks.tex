@@ -1,0 +1,329 @@
+\newpage
+\section{Neuronale Netzwerke}
+\subsection{Representation}
+\begin{flushleft}
+
+
+Der Inputnode $x_{0}$ wird nicht immer eingezeichnet und repräsentiert den Bias-Node.
+
+Weiter gilt:
+
+$\begin{aligned}
+ \alpha_{i}^{(j)} &= \text{Aktivierung der Einheit i im Layer j}
+\end{aligned}$
+
+$\begin{aligned}
+ \Theta^{(j)} &= \text{Gewichtsmatrix welche Layer j auf Layer j+1 mapt}
+\end{aligned}$
+
+\begin{tikzpicture}[
+     % define styles 
+     clear/.style={ 
+         draw=none,
+         fill=none
+     },
+     net/.style={
+         matrix of nodes,
+         nodes={ draw, circle, inner sep=10pt },
+         nodes in empty cells,
+         column sep=2cm,
+         row sep=-9pt
+     },
+     >=latex
+]
+% define matrix mat to hold nodes
+% using net as default style for cells
+\matrix[net] (mat)
+{
+% Define layer headings
+|[clear]| \parbox{1.3cm}{\centering Input\\layer} 
+    & |[clear]| \parbox{1.3cm}{\centering Hidden\\layer} 
+    & |[clear]| \parbox{1.3cm}{\centering Output\\layer} \\
+         
+$x_{0}$  & |[clear]|        & |[clear]| \\
+|[clear]|         & $\alpha_{1}^{(2)}$ & |[clear]| \\
+$x_{1}$  & |[clear]|        & |[clear]| \\
+|[clear]|         & |[clear]|        & |[clear]| \phantom{$a_{0}^{0}$} \\
+$x_{2}$  & $\alpha_{2}^{(2)}$ & $$ \\
+|[clear]|         & |[clear]|        & |[clear]|  \phantom{$a_{0}^{0}$} \\
+$x_{3}$  & |[clear]|        & |[clear]| \\
+|[clear]|         & $\alpha_{3}^{(2)}$ & |[clear]| \\
+$x_{4}$  & |[clear]|        & |[clear]| \\ 
+};
+% left most lines into input layers
+\foreach \ai in {2,4,6,8,10}
+    \draw[<-] (mat-\ai-1) -- +(-2cm,0);
+% lines from a_{i}^{0} to each a_{j}^{1}
+\foreach \ai in {2,4,6,8,10} {
+    \foreach \aii in {3,6,9}
+        \draw[->] (mat-\ai-1) -- (mat-\aii-2);
+        }
+% lines from a_{i}^{1} to a_{0}^{2}
+\foreach \ai in {3,6,9}
+  \draw[->] (mat-\ai-2) -- (mat-6-3);
+    
+% right most line with Output label
+\draw[->] (mat-6-3) -- node[above] {$h_{\Theta}(x)$} +(2cm,0);
+\end{tikzpicture}
+
+
+
+
+$$ \alpha_{1}^{(2)} = g(\Theta_{10}^{(1)}x_{0} +  \Theta_{11}^{(1)}x_{1} + \Theta_{12}^{(1)}x_{2} +\Theta_{13}^{(1)}x_{3} + \Theta_{14}^{(1)}x_{4})$$
+
+$$ \alpha_{2}^{(2)} = g(\Theta_{20}^{(1)}x_{0} +  \Theta_{21}^{(1)}x_{1} + \Theta_{22}^{(1)}x_{2} +\Theta_{23}^{(1)}x_{3} + \Theta_{24}^{(1)}x_{4})$$
+
+$$ \alpha_{3}^{(2)} = g(\Theta_{30}^{(1)}x_{0} +  \Theta_{31}^{(1)}x_{1} + \Theta_{32}^{(1)}x_{2} +\Theta_{33}^{(1)}x_{3} + \Theta_{34}^{(1)}x_{4})$$
+
+
+$$ h_{\Theta}(x) = \alpha_{1}^{(3)} = g(\Theta_{10}^{(2)}\alpha_{0}^{(2)} + \Theta_{11}^{(2)}\alpha_{1}^{(2)} + \Theta_{12}^{(2)}\alpha_{2}^{(2)} + \Theta_{13}^{(2)}\alpha_{3}^{(2)}) $$
+
+
+Existiert ein neuronales Netz mit $s_{j}$ Einheiten im Layer $j$, $s_{j+1}$ Einheiten im Layer $j+1$, dann hat $\Theta^{(j)}$ die Dimension $s_{j+1} \times (s_{j} + 1)$.
+
+\end{flushleft}
+
+
+\subsection{Logik Beispiel}
+
+\subsubsection{AND}
+\begin{flushleft}
+
+
+Ein AND-Gatter kann wie folgt erstellt werden:
+
+\begin{tikzpicture}[
+     % define styles 
+     clear/.style={ 
+         draw=none,
+         fill=none
+     },
+     net/.style={
+         matrix of nodes,
+         nodes={ draw, circle, inner sep=10pt },
+         nodes in empty cells,
+         column sep=2cm,
+         row sep=-9pt
+     },
+     >=latex
+]
+% define matrix mat to hold nodes
+% using net as default style for cells
+\matrix[net] (mat)
+{
+% Define layer headings
+|[clear]| \parbox{1.3cm}{\centering Input\\layer} & |[clear]| \parbox{1.3cm}{\centering Output\\layer} \\
+         
+$+1$  		& |[clear]| \\
+|[clear]| 	& |[clear]| \\
+$x_{1}$  	& |[clear]| \\
+|[clear]| 	& $$ \\
+$x_{2}$  	& |[clear]| \\
+};
+\draw[->] (mat-2-1) -- node[above=1mm] {-30} (mat-5-2);
+\draw[->] (mat-4-1) -- node[above=1mm] {20} (mat-5-2);
+\draw[->] (mat-6-1) -- node[above=1mm] {20} (mat-5-2);
+\draw[->] (mat-5-2) -- node[above] {$h_{\Theta}(x)$} +(2cm,0);
+\end{tikzpicture}
+
+$$ h_{\Theta}(x) = g(-30 + 20x_{1} + 20x_{2}) $$
+
+
+\begin{center}
+\begin{tabular}{ c c|r } 
+
+ $x_{1}$ & $x_{2}$ & $h_{\Theta}(x)$ \\ 
+  \hline
+ 0 & 0 & $g(-30) \approx 0$ \\ 
+ 0 & 1 & $g(-10) \approx 0$ \\ 
+ 1 & 0 & $g(-10) \approx 0$ \\ 
+ 1 & 1 & $g(10) \approx 1$ \\ 
+
+\end{tabular}
+\end{center}
+\end{flushleft}
+
+
+\subsubsection{OR}
+\begin{flushleft}
+
+
+Ein OR-Gatter kann wie folgt erstellt werden:
+
+\begin{tikzpicture}[
+     % define styles 
+     clear/.style={ 
+         draw=none,
+         fill=none
+     },
+     net/.style={
+         matrix of nodes,
+         nodes={ draw, circle, inner sep=10pt },
+         nodes in empty cells,
+         column sep=2cm,
+         row sep=-9pt
+     },
+     >=latex
+]
+% define matrix mat to hold nodes
+% using net as default style for cells
+\matrix[net] (mat)
+{
+% Define layer headings
+|[clear]| \parbox{1.3cm}{\centering Input\\layer} & |[clear]| \parbox{1.3cm}{\centering Output\\layer} \\
+         
+$+1$  		& |[clear]| \\
+|[clear]| 	& |[clear]| \\
+$x_{1}$  	& |[clear]| \\
+|[clear]| 	& $$ \\
+$x_{2}$  	& |[clear]| \\
+};
+\draw[->] (mat-2-1) -- node[above=1mm] {-10} (mat-5-2);
+\draw[->] (mat-4-1) -- node[above=1mm] {20} (mat-5-2);
+\draw[->] (mat-6-1) -- node[above=1mm] {20} (mat-5-2);
+\draw[->] (mat-5-2) -- node[above] {$h_{\Theta}(x)$} +(2cm,0);
+\end{tikzpicture}
+
+$$ h_{\Theta}(x) = g(-10 + 20x_{1} + 20x_{2}) $$
+
+
+\begin{center}
+\begin{tabular}{ c c|r } 
+
+ $x_{1}$ & $x_{2}$ & $h_{\Theta}(x)$ \\ 
+  \hline
+ 0 & 0 & $g(-10) \approx 0$ \\ 
+ 0 & 1 & $g(10) \approx 1$ \\ 
+ 1 & 0 & $g(10) \approx 1$ \\ 
+ 1 & 1 & $g(30) \approx 1$ \\ 
+
+\end{tabular}
+\end{center}
+\end{flushleft}
+
+
+\subsubsection{NOT}
+\begin{flushleft}
+
+
+Ein NOT-Gatter kann wie folgt erstellt werden:
+
+\begin{tikzpicture}[
+     % define styles 
+     clear/.style={ 
+         draw=none,
+         fill=none
+     },
+     net/.style={
+         matrix of nodes,
+         nodes={ draw, circle, inner sep=10pt },
+         nodes in empty cells,
+         column sep=2cm,
+         row sep=-9pt
+     },
+     >=latex
+]
+% define matrix mat to hold nodes
+% using net as default style for cells
+\matrix[net] (mat)
+{
+% Define layer headings
+|[clear]| \parbox{1.3cm}{\centering Input\\layer} & |[clear]| \parbox{1.3cm}{\centering Output\\layer} \\
+         
+$+1$  		& |[clear]| \\
+|[clear]| 	& $$ \\
+$x_{1}$  	& |[clear]| \\
+};
+\draw[->] (mat-2-1) -- node[above=1mm] {10} (mat-3-2);
+\draw[->] (mat-4-1) -- node[above=1mm] {-20} (mat-3-2);
+\draw[->] (mat-3-2) -- node[above] {$h_{\Theta}(x)$} +(2cm,0);
+\end{tikzpicture}
+
+$$ h_{\Theta}(x) = g(10 - 20x_{1}) $$
+
+
+\begin{center}
+\begin{tabular}{ c|r } 
+
+ $x_{1}$ & $h_{\Theta}(x)$ \\ 
+  \hline
+ 0 & $g(10) \approx 1$ \\ 
+ 1 & $g(-10) \approx 0$ \\ 
+
+\end{tabular}
+\end{center}
+\end{flushleft}
+
+
+
+\subsubsection{XNOR}
+\begin{flushleft}
+
+
+Durch Kombinationen von einzelnen NN können komplexere Gatter erstellt werden. Wie bspw. das XNOR Gatter.
+
+\begin{tikzpicture}[
+     % define styles 
+     clear/.style={ 
+         draw=none,
+         fill=none
+     },
+     net/.style={
+         matrix of nodes,
+         nodes={ draw, circle, inner sep=10pt },
+         nodes in empty cells,
+         column sep=2cm,
+         row sep=-9pt
+     },
+     >=latex
+]
+% define matrix mat to hold nodes
+% using net as default style for cells
+\matrix[net] (mat)
+{
+% Define layer headings
+|[clear]| \parbox{1.3cm}{\centering Input\\layer} 
+	& |[clear]| \parbox{1.3cm}{\centering Hidden\\layer} 
+	& |[clear]| \parbox{1.3cm}{\centering Output\\layer} \\
+         
+$+1$  		& $+1$ 					&	|[clear]|\\
+|[clear]|	& |[clear]|				&	|[clear]| \\
+$x_{1}$  	& $\alpha_{1}^{(2)}$  	&  	$\alpha_{1}^{(3)}$\\
+|[clear]|	& |[clear]|				&	|[clear]| \\
+$x_{2}$  	& $\alpha_{1}^{(2)}$ 	&  	|[clear]|\\
+};
+% +1
+\draw[->] (mat-2-1) -- node[above=0mm] {-30} (mat-4-2);
+\draw[->] (mat-2-1) -- node[above=0mm] {10} (mat-6-2);
+%  x1
+\draw[->] (mat-4-1) -- node[below=0mm] {20} (mat-4-2);
+\draw[->] (mat-4-1) -- node[above=0mm] {-20} (mat-6-2);
+%  x2
+\draw[->] (mat-6-1) -- node[below=0mm] {20} (mat-4-2);
+\draw[->] (mat-6-1) -- node[below=0mm] {-10} (mat-6-2);
+
+%
+\draw[->] (mat-2-2) -- node[above=0mm] {-10} (mat-4-3);
+\draw[->] (mat-4-2) -- node[above=0mm] {20} (mat-4-3);
+\draw[->] (mat-6-2) -- node[above=0mm] {20} (mat-4-3);
+
+\draw[->] (mat-4-3) -- node[above] {$h_{\Theta}(x)$} +(2cm,0);
+
+\end{tikzpicture}
+
+
+\begin{center}
+\begin{tabular}{ c c|c c|r } 
+
+ $x_{1}$ & $x_{2}$ & $\alpha_{1}^{(2)}$ & $\alpha_{2}^{(2)}$ & $h_{\Theta}(x)$ \\ 
+  \hline
+ 0 & 0 & 0 & 1 & 1 \\ 
+ 0 & 1 & 0 & 0 & 0 \\ 
+ 1 & 0 & 0 & 0 & 0 \\ 
+ 1 & 1 & 1 & 0 & 1 \\ 
+
+\end{tabular}
+\end{center}
+\end{flushleft}
+
+

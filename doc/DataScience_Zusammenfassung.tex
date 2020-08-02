@@ -7,12 +7,14 @@
 
 \usepackage{graphicx} % allows to import images
 \usepackage{float}	% allows for control of float positions
-\usepackage{tikz} 	% Used to create trees
+\usepackage{tikz} 	% Used to create trees, neural networks, 
+\usetikzlibrary{matrix,chains,positioning,decorations.pathreplacing,arrows} % For neural networks
+
 \usepackage{pgfplots}	% to create plots
 
 \usepackage{forest} % Used to create trees
 
-\usepackage{amsmath}	 % to use cases in equations
+\usepackage{amsmath}	 % to use cases in equations and vectors
 
 \usepackage[hidelinks]{hyperref}	% allows for clickable references
 
@@ -26,7 +28,11 @@
 
 \usepackage{xfrac}	% allows for slanted fractions 
 
-\usepackage{pgfplots}	% Used for Linear regression plot
+\usepackage{pgfplots}	% Used for function-plots
+
+
+\usepackage{algorithm}		% Wirte pseudocode algorithms
+\usepackage{algorithmic}
 
 %\usepackage[table]  % Used for tables
 
@@ -45,6 +51,16 @@
 \renewcommand{\labelitemi}{$\bullet$}	% first list item
 \renewcommand{\labelitemii}{$\circ$}	% one-indented item
 \renewcommand{\labelitemiii}{$\diamond$}	% twice-indented item
+% ============================================================
+
+% BE ABLE TO USE ROW AND COLUMN VECTORS INLINE ============================================================
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+\newcommand{\irow}[1]{% inline row vector
+  \begin{smallmatrix}(#1)\end{smallmatrix}%
+}
 % ============================================================
 
 
@@ -118,6 +134,8 @@
 \include{chapters/NormalEquation}
 \include{chapters/LinearRegression}
 \include{chapters/LogisticRegression}
+\include{chapters/NeuralNetworks}
+
 
 % ============================================================
 
