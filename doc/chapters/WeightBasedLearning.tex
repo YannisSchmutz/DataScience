@@ -1,0 +1,116 @@
+\newpage
+\section{Gewichtbasiertes Lernen}
+\subsection{Notationen}
+\begin{flushleft}
+
+\begin{align*}
+x^{(i)} &= \text{Die Features des i-ten Samples} \\
+x_{j}^{(i)} &= \text{Der Wert des j-ten Features im i-ten Samples} \\
+m &= \text{Die Anzahl Samples} \\
+n &= \text{Die Anzahl Features} \\
+X &= \text{Datenset} \\
+y &= \text{Target Vektor}
+\end{align*}
+
+In der Regel ist ein Datenset als Matrix $X$ gegeben mit $\mathbb{R}^{m \times n}$
+
+
+\begin{center}
+	\begin{table}[h]
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\textbf{Feature 1} & \textbf{Feature 2} & \textbf{...} & \textbf{Feature n} & \textbf{Target} \\ 
+		\hline
+		$x_{1}^{(1)}$ & $x_{2}^{(1)}$ & ... & $x_{n}^{(1)}$ & Klasse X  \\ 
+		\hline
+		$x_{1}^{(2)}$ & $x_{2}^{(2)}$ & ... & $x_{n}^{(2)}$ & Klasse Y  \\ 
+		\hline
+		$x_{1}^{(m)}$ & $x_{2}^{(m)}$  & ... & $x_{n}^{(m)}$  & Klasse Z  \\ 
+		\hline
+	\end{tabular}
+\end{table}
+\end{center}
+
+
+\end{flushleft}
+
+\newpage
+\subsection{Perceptron}
+\begin{flushleft}
+
+                        
+\begin{align*}
+w_{i}\cdot x &= \hat{y} \\
+d(\hat{y}) &= \begin{cases}
+       		1 & \text{wenn } \hat{y} \geq 0, \\
+       		0 & \text{sonst.}
+    	\end{cases} \\
+d(w_{i} \cdot x) &= \begin{cases}
+       		1 & \text{wenn } \hat{y} \geq 0, \\
+       		0 & \text{sonst.}
+    	\end{cases} \\
+d(w_{i}^{T}x) &= \begin{cases}
+       		1 & \text{wenn } \hat{y} \geq 0, \\
+       		0 & \text{sonst.}
+    	\end{cases} \\
+\end{align*}
+                        
+                        
+\newcommand{\myThresholdFunction}{
+\draw[thick] (-2.25em,0em) -- (1.25em,0em) 
+			 (-0.5em,1.75em) -- (-0.5em,-1.75em)
+(-0.5em,1.25em) -- (0.5em,1.25em)
+(-0.5em,-1.25em) -- (-1.5em,-1.25em)
+;}
+                        
+\begin{tikzpicture}[
+     % define styles 
+     clear/.style={ 
+         draw=none,
+         fill=none
+     },
+     net/.style={
+         matrix of nodes,
+         nodes={ draw, circle, inner sep=10pt },
+         nodes in empty cells,
+         column sep=2cm,
+         row sep=-9pt
+     },
+     >=latex
+]
+% define matrix mat to hold nodes
+% using net as default style for cells
+\matrix[net] (mat)
+{
+% Define layer headings
+|[clear]| \parbox{1.3cm}{\centering Input\\layer} & 
+|[clear]| \parbox{1.3cm}{\centering Gewichtete\\Summe} &
+|[clear]| \parbox{1.3cm}{\centering Schwellwert\\Funktion} \\
+         
+$+1$  		& |[clear]| & |[clear]| \\
+|[clear]| 	& |[clear]| & |[clear]| \\
+$x_{1}$  	& |[clear]| & |[clear]| \\
+|[clear]| 	& $\Sigma$  & \myThresholdFunction \\
+\vdots  	& |[clear]| & |[clear]| \\
+|[clear]| 	& |[clear]| & |[clear]| \\
+$x_{n}$  	& |[clear]| & |[clear]| \\
+};
+\draw[->] (mat-2-1) -- node[above=1mm] {$w_{0}$} (mat-5-2);
+\draw[->] (mat-4-1) -- node[above=1mm] {$w_{1}$} (mat-5-2);
+\draw[->] (mat-6-1) -- node[above=1mm] {$\vdots$} (mat-5-2);
+\draw[->] (mat-8-1) -- node[above=1mm] {$w_{n}$} (mat-5-2);
+\draw[->] (mat-5-2) -- node[above=1mm] {$\hat{y}$} (mat-5-3);
+\draw[->] (mat-5-3) -- node[right=2em] {$\begin{cases}
+       		1 & \text{wenn } \hat{y} \geq 0, \\
+       		0 & \text{sonst.}
+    	\end{cases}$} +(2cm,0);
+\end{tikzpicture}
+
+\end{flushleft}
+
+
+
+
+
+
+
