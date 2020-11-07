@@ -252,7 +252,63 @@ Der Punkt $P_{2}$ wird also der Klasse 0 zugeordnet.
 \end{flushleft}
 
 \subsubsection{One-vs-all}
-TODO
+Im One-vs-All (OvA) Verfahren geht es darum mittels eigentlich binären Klassifizierungsverfahren multivariable Klassifizierungen vorzunehmen. Wir wollen also $C > 2$ Klassen unterscheiden können.
+
+Wir wollen also für jede Klasse diese mit den restlichen $C-1$ Klassen unterscheiden können.
+
+
+\begin{figure}[H]
+	\centering
+	\label{fig:one_vs_all_vis}
+	\includegraphics[scale=0.5]{figures/OvA}
+	\caption{One-vs-All Visualisierung}
+\end{figure}
+
+
+Angenommen wir haben ein Datenset bestehend aus drei Klassen. Blau, Rot und Grün. Im Datenset ist diesen Klassen jeweils ein numerischen Wert 0, 1 und 2 zugewiesen.
+
+
+\begin{figure}[H]
+	\centering
+	\label{fig:one_vs_all_ds_orig}
+	\includegraphics[scale=0.5]{figures/OvA_datenset_original}
+	\caption{One-vs-All Datenset original}
+\end{figure}
+
+
+Für das OvA Verfahren werden dem Datenset für jede Klasse eine neue Spalte mit erweiterten temporären Zielvariablen hinzugefügt.
+
+Hierbei wird stets die c-te Klasse betrachtet. In jeder Reihe des Datensets der c-ten Klasse wird ihre temporäre Spalte wird auf $+1$ gesetzt, alle anderen temporären Spalten auf $-1$. 
+
+\begin{figure}[H]
+	\centering
+	\label{fig:one_vs_all_ds}
+	\includegraphics[scale=0.5]{figures/OvA_datenset}
+	\caption{One-vs-All Datenset}
+\end{figure}
+
+
+Bisher hatten wir beim Perceptron jeweils ein Gewichtsvektor, welcher eine binäre Unterscheidung durchführt. Nun erhalten wir aber für jede Klasse einen Gewichtsvektor, der sozusagen immer noch eine binäre Unterscheidung durchführt; jedoch zwischen der jeweiligen Klasse und allen anderen Klassen.
+
+In unserem Beispiel haben wir vier Features und drei Klassen. Dies ergibt uns die folgende Gewichtsmatrix.
+
+$W = \begin{bmatrix}
+w_{0,0} & w_{0,1} & w_{0,2}\\
+w_{1,0} & w_{1,1} & w_{1,2}\\
+w_{2,0} & w_{2,1} & w_{2,2}\\
+w_{3,0} & w_{3,1} & w_{3,2}\\
+w_{4,0} & w_{4,1} & w_{4,2}\\
+\end{bmatrix}$
+
+
+Der erste Index referiert jeweils das entsprechende Feature und der zweite der Index der Klasse.
+
+Ist die Matrix initialisiert, müssen wir für jede Klasse den entsprechenden Gewichtsvektor trainieren. 
+
+Ein zu klassifizierendes Sample wird einer Klasse zugewiesen, indem alle berechneten Outputs der Gewichtsvektoren betrachtet werden. Das Sample wird der Klasse zugeordnet, welche den höchsten Output generiert.
+
+$$ y = \text{max}_{c=0,...,C-1} \text{Model}(x, W)$$
+
 
 \newpage
 \subsection{Adaline}
