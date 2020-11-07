@@ -307,7 +307,7 @@ Ist die Matrix initialisiert, müssen wir für jede Klasse den entsprechenden Ge
 
 Ein zu klassifizierendes Sample wird einer Klasse zugewiesen, indem alle berechneten Outputs der Gewichtsvektoren betrachtet werden. Das Sample wird der Klasse zugeordnet, welche den höchsten Output generiert.
 
-$$ y = \text{max}_{c=0,...,C-1} \text{Model}(x, W)$$
+$$ \hat{y} = \text{max}_{c=0,...,C-1} \text{model.train}(x, W)$$
 
 
 \newpage
