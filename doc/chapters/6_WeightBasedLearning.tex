@@ -1,0 +1,369 @@
+\newpage
+\section{Gewichtbasiertes Lernen}
+\label{sec:weight_based_learning}
+\subsection{Notationen}
+\begin{flushleft}
+
+\begin{align*}
+\text{superscript } ^{(i)} &= \text{Index für Samples, Zeilenindex} \\
+\text{subscript } _{j} &= \text{Index für Features, Spaltenindex} \\
+x^{(i)} &= \text{Die Features des i-ten Samples, Featurevektor} \\
+x_{j}^{(i)} &= \text{Der Wert des j-ten Features im i-ten Samples} \\
+m &= \text{Die Anzahl Samples} \\
+n &= \text{Die Anzahl Features} \\
+X &= \text{Datenset} \\
+y &= \text{Target Vektor}
+\end{align*}
+
+In der Regel ist ein Datenset als Matrix $X$ gegeben mit $\mathbb{R}^{m \times n}$
+
+
+\begin{center}
+	\begin{table}[h]
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\textbf{Feature 1} & \textbf{Feature 2} & \textbf{...} & \textbf{Feature n} & \textbf{Target} \\ 
+		\hline
+		$x_{1}^{(1)}$ & $x_{2}^{(1)}$ & ... & $x_{n}^{(1)}$ & Klasse X  \\ 
+		\hline
+		$x_{1}^{(2)}$ & $x_{2}^{(2)}$ & ... & $x_{n}^{(2)}$ & Klasse Y  \\ 
+		\hline
+		... & ...  & ... & ...  & ...  \\ 
+		\hline
+		$x_{1}^{(m)}$ & $x_{2}^{(m)}$  & ... & $x_{n}^{(m)}$  & Klasse Z  \\
+		\hline
+	\end{tabular}
+\end{table}
+\end{center}
+
+
+\end{flushleft}
+
+
+
+% === PERCEPTRON ===
+\newpage
+\subsection{Perceptron}
+\begin{flushleft}
+
+                        
+Das Perceptron ist ein linearer binärer Klassifikator. In einem Lernprozess generiert das Perceptron eine lineare Funktion, welche Daten in zwei Gruppen unterteilen kann. Eine Gruppe wird oberhalb der Funktionsgeraden liegen, die andere unterhalb.
+
+Eine Konstante (1) wie auch der Feature-Vektor werden individuell mit Gewichten multipliziert und addiert. Ist die Summe grösser als 0, so werden die Input-Features der Klasse 1 zugeordnet. Anderenfalls der Klasse 0.
+
+Für zwei Features $x_{1}$ und $x_{2}$ würde die lineare Funktion wie folgt lauten:
+$$w_{0} + x_{1}w_{1} - x_{2}w_{2} = 0$$
+                        
+                        
+\newcommand{\myThresholdFunction}{
+\draw[thick] %(-2.25em,0em) -- (1.25em,0em) 
+			 (-0.5em,1.25em) -- (-0.5em,-1.25em)
+(-0.5em,1.25em) -- (0.5em,1.25em)
+(-0.5em,-1.25em) -- (-1.5em,-1.25em)
+;}
+
+
+\begin{figure}[H]
+\centering
+\label{fig:perceptron}
+\begin{tikzpicture}[
+     % define styles 
+     clear/.style={ 
+         draw=none,
+         fill=none
+     },
+     net/.style={
+         matrix of nodes,
+         nodes={ draw, circle, inner sep=10pt },
+         nodes in empty cells,
+         column sep=2cm,
+         row sep=-9pt
+     },
+     >=latex
+]
+% define matrix mat to hold nodes
+% using net as default style for cells
+\matrix[net] (mat)
+{
+% Define layer headings
+|[clear]| \parbox{1.3cm}{\centering Input\\layer} & 
+|[clear]| \parbox{1.3cm}{\centering Gewichtete\\Summe} &
+|[clear]| \parbox{1.3cm}{\centering Schwellwert\\Funktion} \\
+         
+$+1$  		& |[clear]| & |[clear]| \\
+|[clear]| 	& |[clear]| & |[clear]| \\
+$x_{1}$  	& |[clear]| & |[clear]| \\
+|[clear]| 	& $\Sigma$  & \myThresholdFunction \\
+\vdots  	& |[clear]| & |[clear]| \\
+|[clear]| 	& |[clear]| & |[clear]| \\
+$x_{n}$  	& |[clear]| & |[clear]| \\
+};
+\draw[->] (mat-2-1) -- node[above=1mm] {$w_{0}$} (mat-5-2);
+\draw[->] (mat-4-1) -- node[above=1mm] {$w_{1}$} (mat-5-2);
+\draw[->] (mat-6-1) -- node[above=1mm] {$\vdots$} (mat-5-2);
+\draw[->] (mat-8-1) -- node[above=1mm] {$w_{n}$} (mat-5-2);
+\draw[->] (mat-5-2) -- node[above=1mm] {$\hat{y}$} (mat-5-3);
+\draw[->] (mat-5-3) -- node[right=2em] {$\begin{cases}
+       		1 & \text{wenn } \hat{y} \geq 0, \\
+       		0 & \text{sonst.}
+    	\end{cases}$} +(2cm,0);
+\end{tikzpicture}
+\caption{Perceptron als Model}
+\end{figure}
+
+
+Die Entscheidungsfunktion $d$ entscheidet zu welcher Klasse ein gegebener Inputvektor gehört.
+
+\begin{align*}
+w_{i}\cdot x &= \hat{y} \\
+d(\hat{y}) &= \begin{cases}
+       		1 & \text{wenn } \hat{y} \geq 0, \\
+       		0 & \text{sonst.}
+    	\end{cases} \\
+d(w_{i} \cdot x) &= \begin{cases}
+       		1 & \text{wenn } \hat{y} \geq 0, \\
+       		0 & \text{sonst.}
+    	\end{cases} \\
+d(w_{i}^{T}x) &= \begin{cases}
+       		1 & \text{wenn } \hat{y} \geq 0, \\
+       		0 & \text{sonst.}
+    	\end{cases} \\
+\end{align*}
+
+
+Im Gegensatz zu vielen anderen gewichtsbasierten Lernalgorithmen werden beim Perceptron die Gewichte \textbf{nur dann aktualisiert, wenn die vorhergesagte Klasse falsch war.}
+
+Definitionen
+
+\begin{align*}
+\Delta w_{j}  &= \text{Gewichtsupdate} \\
+\hat{y}^{(i)} &= \text{Vorhergesagter (berechneter) Zielwert} \\
+y^{(i)} &= \text{Effektiver Zielwert (Label)} \\
+\eta &= \text{Learning Rate} \\
+(y^{(i)} - \hat{y}^{(i)}) &= \text{Errorfunktion} \\
+\end{align*}
+
+Gewichte werden zu Beginn zufällig initialisiert und dann jeweils wie folgt angepasst:
+$$w_{j} \coloneqq w_{j} + \Delta w_{j}$$
+$$\Delta w_{j} = \eta (y^{(i)} - \hat{y}^{(i)}) x_{j}^{(i)}$$
+
+Im Falle von zwei Input Features, sähe das Aktualisieren der Gewichte so aus:
+\begin{align*}
+\Delta w_{0} &= \eta (y^{(i)} - \hat{y}^{(i)}) \\
+\Delta w_{1} &= \eta (y^{(i)} - \hat{y}^{(i)}) x_{1}^{(i)} \\
+\Delta w_{2} &= \eta (y^{(i)} - \hat{y}^{(i)}) x_{2}^{(i)} \\
+\end{align*}
+
+
+
+% === LERNEN ===
+\newpage
+\subsubsection{Lernen}
+Wir betrachten nun ein Beispiel wie das Perceptron lernt. Die Gewichte werden zufällig wie folgt initialisiert:
+
+\begin{align*}
+	 w_{0} &= -0.5\\
+	 w_{1} &= 2 \\
+	 w_{2} &= -1 \\
+\end{align*}
+
+Die Lernrate $\eta$ setzen wir auf $0.5$.
+Wir betrachten den Punkt $P_{0} = (3,5)$, welcher der Klasse 0 angehört und berechnen dessen $\hat{y}$.
+\begin{align*}
+\hat{y} &= w \cdot x \\
+		&= -0.5 + 2*3 - 5 \\
+		&= 0.5
+\end{align*}
+
+Gemäss der Schwellwertfunktion ist der Punkt $P_{0}$ fälschlicherweise der Klasse 1 zugehörig. Daher werden die Gewichte angepasst.
+
+\begin{align*}
+\Delta w_{j} &= \eta (y^{(i)} - \hat{y}^{(i)}) x_{j}^{(i)} \\
+\Delta w_{0} &= 0.5(0-0.5) \\
+			 &= -0.25 \\
+\Delta w_{1} &= 0.5(0-0.5)3 \\
+			 &= -0.75 \\
+\Delta w_{2} &= 0.5(0-0.5)5 \\
+			 &= -1.25\\
+\end{align*}
+
+Wir passen nun die Gewichte entsprechend an.
+
+\begin{align*}
+	 w_{0} &= w_{0} + \Delta w_{0}\\
+	 	   &= -0.5 + (-0.25) \\
+	 	   &= -0.75 \\
+	 w_{1} &= w_{1} + \Delta w_{1} \\
+	 	   &= 2 + (-0.75) \\
+	 	   &= 1.25 \\
+	 w_{2} &= w_{2} + \Delta w_{2} \\
+	 	   &= -1 + (-1.25) \\
+	 	   &= -2.25 \\
+\end{align*}
+
+Diese Grafik zeigt die Perceptron Funktion vor und nach dem ersten Lern-Update. Für den zweiten Punkt (Klasse 1) in der Grafik, würde die Gewichte nicht aktualisiert werden, da dieser bereits korrekt klassifiziert werden würde.
+
+
+\begin{figure}[H]
+	\centering
+	\label{fig:perceptron_learning}
+	\includegraphics[scale=0.6]{figures/perceptron_learning}
+	\caption{Perceptron Lernbeispiel}
+\end{figure}
+
+
+
+
+% =======
+\newpage
+\subsubsection{Vorhersagen}
+Im folgenden Beispiel würde sich beispielsweise die Gerade $3x_{1} - x_{2} - 9 = 0$ als Entscheidungsfunktion ergeben. Dies ergibt die Gewichte:
+\begin{align*}
+	 w_{0} &= -9\\
+	 w_{1} &= 3 \\
+	 w_{2} &= -1 \\
+\end{align*}
+
+
+
+Wir betrachten einen Punkt $P_{1} = (5,4)$, eingesetzt in die Entscheidungsfunktion $d$:
+
+\begin{align*}
+\hat{y} &= w_{i}\cdot x \\
+		&= -9 + 3*5 - 4 \\
+		&= 2 \\
+d(\hat{y}) &= \begin{cases}
+       		1 & \text{wenn } \hat{y} \geq 0, \\
+       		0 & \text{sonst.}
+       		\end{cases} \\
+d(2) &= \text{Klasse 1} \\
+\end{align*}
+
+\begin{figure}[H]
+	\centering
+	\label{fig:perceptron_prediction}
+	\includegraphics[scale=0.5]{figures/perceptron_line}
+	\caption{Perceptron Vorhersage}
+\end{figure}
+
+Anhand des Punktes $P_{2} = (2,8)$ zeigen wir, dass das Perceptron auch direkt als Ungleichung angesehen werden kann. Wenn die Ungleichung erfüllt wird, wird der Punkt der Klasse 1 (grüner Stern) zugeordnet. Falls nicht der Klasse 0 (rotes Quadrat)
+
+$$w_{i}\cdot x \geq 0$$
+$$ -9 + 3*2 - 8\geq 0$$
+$$ -11 \ngeq 0$$
+
+Der Punkt $P_{2}$ wird also der Klasse 0 zugeordnet.
+
+\end{flushleft}
+
+\subsubsection{One-vs-all}
+Im One-vs-All (OvA) Verfahren geht es darum mittels eigentlich binären Klassifizierungsverfahren multivariable Klassifizierungen vorzunehmen. Wir wollen also $C > 2$ Klassen unterscheiden können.
+
+Wir wollen also für jede Klasse diese mit den restlichen $C-1$ Klassen unterscheiden können.
+
+
+\begin{figure}[H]
+	\centering
+	\label{fig:one_vs_all_vis}
+	\includegraphics[scale=0.5]{figures/OvA}
+	\caption{One-vs-All Visualisierung}
+\end{figure}
+
+
+Angenommen wir haben ein Datenset bestehend aus drei Klassen. Blau, Rot und Grün. Im Datenset ist diesen Klassen jeweils ein numerischen Wert 0, 1 und 2 zugewiesen.
+
+
+\begin{figure}[H]
+	\centering
+	\label{fig:one_vs_all_ds_orig}
+	\includegraphics[scale=0.5]{figures/OvA_datenset_original}
+	\caption{One-vs-All Datenset original}
+\end{figure}
+
+
+Für das OvA Verfahren werden dem Datenset für jede Klasse eine neue Spalte mit erweiterten temporären Zielvariablen hinzugefügt.
+
+Hierbei wird stets die c-te Klasse betrachtet. In jeder Reihe des Datensets der c-ten Klasse wird ihre temporäre Spalte wird auf $+1$ gesetzt, alle anderen temporären Spalten auf $-1$. 
+
+\begin{figure}[H]
+	\centering
+	\label{fig:one_vs_all_ds}
+	\includegraphics[scale=0.5]{figures/OvA_datenset}
+	\caption{One-vs-All Datenset}
+\end{figure}
+
+
+Bisher hatten wir beim Perceptron jeweils ein Gewichtsvektor, welcher eine binäre Unterscheidung durchführt. Nun erhalten wir aber für jede Klasse einen Gewichtsvektor, der sozusagen immer noch eine binäre Unterscheidung durchführt; jedoch zwischen der jeweiligen Klasse und allen anderen Klassen.
+
+In unserem Beispiel haben wir vier Features und drei Klassen. Dies ergibt uns die folgende Gewichtsmatrix.
+
+$W = \begin{bmatrix}
+w_{0,0} & w_{0,1} & w_{0,2}\\
+w_{1,0} & w_{1,1} & w_{1,2}\\
+w_{2,0} & w_{2,1} & w_{2,2}\\
+w_{3,0} & w_{3,1} & w_{3,2}\\
+w_{4,0} & w_{4,1} & w_{4,2}\\
+\end{bmatrix}$
+
+
+Der erste Index referiert jeweils das entsprechende Feature und der zweite der Index der Klasse.
+
+Ist die Matrix initialisiert, müssen wir für jede Klasse den entsprechenden Gewichtsvektor trainieren. 
+
+Ein zu klassifizierendes Sample wird einer Klasse zugewiesen, indem alle berechneten Outputs der Gewichtsvektoren betrachtet werden. Das Sample wird der Klasse zugeordnet, welche den höchsten Output generiert.
+
+$$ \hat{y} = \text{max}_{c=0,...,C-1} \text{model.predict}(x, W)$$
+
+\newpage
+\subsection{Interpretation}
+\begin{flushleft}
+
+\subsubsection{Problematik}
+\begin{flushleft}
+
+In der klassischen Software-Entwicklung können wir auftretende Bugs mittels Debugging ausfindig machen. Sobald wir den Bug lokalisiert haben beheben wir diesen, indem wir nur einen gewissen Teil unseres Programmes anpassen.
+
+Um uns vor zukünftigen Bugs zu schützen, schreiben wir automatisierte Tests. Diese sollen verifizieren, dass auch bei künftigen Änderungen die bisherigen Features wie gewohnt funktionieren.
+
+Diese "klassischen" Prozesse lassen sich jedoch (momentan) nicht eins zu eins auf einen ML-Workflow anwenden. Damit Machine Learning in Zukunft richtig funktionieren kann, müssen folgende Methoden entwickelt und etabliert werden:
+
+
+\begin{itemize}
+  \item ML Prozesse, Modelle und Integrationen debuggen können.
+  \item Entdeckte Bugs beheben können.
+  \item Automatisierte Testverfahren, die das Verhalten unserer ML-Lösung verifizieren.
+  \item Sicher stellen, dass sich unser Model auch nach einem erneuten Trainieren oder sonstigen Änderungen noch wie erwartet verhält.
+\end{itemize}
+
+Um diese Methoden erfolgreich umzusetzen, müssen ML Modelle und Prozesse interpretiert werden können.
+
+\end{flushleft}
+
+
+\subsubsection{Blackbox}
+\begin{flushleft}
+Eine grosse Schwierigkeit in der ML Domäne ist, dass Modelle wie auch Probleme oftmals einer Blackbox ähneln.
+
+
+\end{flushleft}
+
+
+TODO
+
+\begin{itemize}
+  \item Test the effect of $\eta$ (eta) by training with Perceptron versions without it.
+  \item Understanding the effect of $\eta$ (eta) and its relation with epochs by identifying bounds for too high or too low $\eta$ values.
+  \item Develop a strategy for finding optimal hyperparameters
+  \item Peter Norvig's ideas for the future of Machine Learning 
+  \item The concept of Interpretability
+  \item The concept of Epxlainability
+\end{itemize}
+
+
+
+
+\end{flushleft}
+
+
+
+

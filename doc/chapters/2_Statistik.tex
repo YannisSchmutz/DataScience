@@ -1,0 +1,98 @@
+\newpage
+\section{Statistik}
+\label{sec:stat}
+
+\subsection{Begriffe}
+\begin{flushleft}
+Dieses Kapitel bietet eine grobe Übersicht Über einige hilfreiche Begriffe der Statistik.
+
+\subsubsection{Lageparameter}
+Lageparameter beschreiben die Lage der Stichprobenelemente im Bezug auf die Messskala.
+\linebreak
+
+\textbf{Mittelwert} \\
+Auch Durchschnitt (oder mean im Englischen) gennant. In der Wahrscheinlichkeitsrechnung spricht man oft vom Erwartungswert.
+
+$$\bar{x}_{arithm} = \frac{1}{n} \sum_{i=1}^{n} x_i$$
+$$E[X] = \sum_{\omega \in \Omega} p(\omega)*X(\omega)$$
+
+\textbf{Median} \\ 
+Der Median oder auch Zentralwert genannt, beschreibt den Wert aus der auf-/ absteigend geordneten Stichprobe, der genau in der Mitte liegt.
+
+\begin{equation*}
+  \widetilde{x} = \begin{cases}
+    x_{\frac{n+1}{2}}, & \text{\textit{n} ungerade}\\
+    \frac{1}{2} \left( x_{\frac{n}{2}} + x_{\frac{n}{1}+1} \right), & \text{\textit{n} gerade}.
+  \end{cases}
+\end{equation*}
+
+
+\textbf{Quantile} \\
+Schwellenwert (engl. percentile) der angibt, dass ein bestimmter prozentualer Wert einer Menge an Werten kleiner ist als das Quantil. 
+Das Quantil bei 50\% ist der Median. Weitere spezielle Quantile sind die Quartile, die Quintile, die Dezile und die Perzentile.
+\linebreak
+
+\textbf{Modus} \\
+Definiert den häufigsten Wert, der in der Stichprobe vorkommt.
+\linebreak
+
+\subsubsection{Streuungsparameter}
+Streuungsparameter beschreiben die Streuung von Werten einer Stichprobe um einen bestimmten Lageparameter. So ergeben sich je nach gewählten Lageparameter unterschiedliche Berechungsformen. Diese unterscheiden sich in ihrer Beeinflussung durch Ausreisser. So wird beispielsweise der Median tendenziell weniger von einem einzelnen, sehr hohen Ausreisser beeinflusst als der arithmetische Mittelwert.
+\linebreak
+
+\textbf{Spannweite} \\
+Die Spannweite (eng. range) gibt den Abstand des grössten gegenüber dem kleinsten vorkommenden Wert der Stichprobe an. $R = x_{max} - x_{min}$.
+\linebreak
+Die Spannweite wird stark durch Ausreisser beeinflusst. Dem kann jedoch durch das alternative Verwenden des \textbf{Interquartilsabstands} (engl. interquartile range) entgegengewirkt werden. Dieser berechnet nämlich die Spannweite zwischen zwei Quantilen. Somit können Ausreisser ignoriert werden.
+\linebreak
+
+\textbf{Varianz} \\
+
+
+
+\textbf{Korrelation} \\
+
+
+\textbf{Kovarianz} \\
+
+
+
+\textbf{Kausalität} \\
+
+\subsubsection{Daten}
+\textbf{NOIR} \\
+
+\begin{itemize}
+	\item \textbf{Nominal}
+		\begin{itemize}
+			\item Meist diskret
+			\item Keine Rangordnung
+			\item Bspw: Farben, Geschlecht, Ortschaft etc.
+		\end{itemize} 
+	\item \textbf{Ordinal}
+		\begin{itemize}
+			\item Meist diskret
+			\item Rangordnung
+			\item Keine interpretierbare Abstände
+			\item Bspw: Schlecht, okay, gut, sehr gut
+		\end{itemize} 
+	\item \textbf{Interval}
+		\begin{itemize}
+			\item Meist stetig
+			\item Rangordnung
+			\item Interpretierbare Abstände
+			\item Kein interpretierbarer Nullpunkt
+			\item Bspw: Grad Celsius (geht unter Null)
+		\end{itemize} 
+	\item \textbf{Rational}
+		\begin{itemize}
+			\item Meist stetig
+			\item Rangordnung
+			\item Interpretierbare Abstände
+			\item Definierter Nullpunkt
+			\item Bspw: Grad Kelvin (geht nicht unter 0K)
+		\end{itemize} 
+
+\end{itemize}
+
+\end{flushleft}

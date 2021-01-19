@@ -66,6 +66,11 @@
 }
 % ============================================================
 
+% R Commands =================================================
+% Be able to reference sections with number
+\newcommand{\secref}[1]{\autoref{#1}. \nameref{#1}}
+% ============================================================
+
 
 % TODO: Diese beiden sollten jeweils das \begin{flushleft} erstzen. 
 % Jedoch ist der Text dann im Blocksatz, wenn flushleft fehlt...
@@ -127,12 +132,13 @@
 \setcounter{page}{1}		% Sets this page to the first one (and not the table of contents)
 \pagenumbering{arabic}	% Sets the page numbering back to arabic
 
-\include{chapters/Einleitung}
-\include{chapters/Statistik}
-\include{chapters/Probabilistik}
-\include{chapters/FeatureScaling}
-\include{chapters/MachineLearning}
-\include{chapters/WeightBasedLearning}
+\include{chapters/1_Einleitung}
+\include{chapters/2_Statistik}
+\include{chapters/3_Probabilistik}
+\include{chapters/4_FeatureScaling}
+\include{chapters/5_MachineLearning}
+\include{chapters/6_WeightBasedLearning}
+\include{chapters/7_ContinuousLearning}
 
 \include{chapters/GradientDescent}
 
