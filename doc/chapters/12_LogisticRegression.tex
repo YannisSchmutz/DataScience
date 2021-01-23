@@ -81,10 +81,10 @@ Graphisch dargestellt sieht die Cost-Function wie folgt aus:
 \begin{algorithm}
 \caption{Calculate $\text{min}_{\Theta} J(\Theta)$}
 \begin{algorithmic} 
-\REPEAT 
-\STATE $ \Theta_{j} := \Theta_{j} - \alpha\sum_{i=1}^{m}(h_{\Theta}(x^{(i)}) - y^{(i)})x_{j}^{(i)} $
-\COMMENT{simultaneously update all $\Theta_{j}$}
-\UNTIL{$J(\Theta)$ converges}
+\Repeat 
+\State $ \Theta_{j} := \Theta_{j} - \alpha\sum_{i=1}^{m}(h_{\Theta}(x^{(i)}) - y^{(i)})x_{j}^{(i)} $
+\Comment{simultaneously update all $\Theta_{j}$}
+\Until{$J(\Theta)$ converges}
 \end{algorithmic}
 \end{algorithm}
 

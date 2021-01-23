@@ -9,10 +9,17 @@
 \usepackage{float}	% allows for control of float positions
 \usepackage{tikz} 	% Used to create trees, neural networks, 
 \usetikzlibrary{matrix,chains,positioning,decorations.pathreplacing,arrows} % For neural networks
+\tikzset{marrow/.style={midway,red,sloped,fill, minimum height=3cm, single arrow, single arrow
+    head extend=.5cm, single arrow head indent=.25cm,xscale=0.3,yscale=0.15,
+    allow upside down},
+    node box/.style={white, draw=black, text=black, rectangle, rounded corners},
+    } % Arrows and boxes in random forest
 
 \usepackage{pgfplots}	% to create plots
 
 \usepackage{forest} % Used to create trees
+\usetikzlibrary{fit,shapes.arrows,positioning}
+
 
 \usepackage{amsmath}	 % to use cases in equations and vectors
 
@@ -35,7 +42,8 @@
 \usepackage{mathtools} % be able to use :=
 
 \usepackage{algorithm}		% Wirte pseudocode algorithms
-\usepackage{algorithmic}
+%\usepackage{algorithmic}
+\usepackage{algpseudocode}
 
 \usepackage{subfig} % Figures side by side
 %\usepackage[table]  % Used for tables
@@ -79,6 +87,49 @@
 \setlength{\parindent}{0pt}
 %Zeilenabstand bei Abstätzen
 \usepackage{parskip}
+
+% ##################################################
+% Listings (Sourcecode)
+% ##################################################
+
+\usepackage{listings}
+%\usepackage{xcolor}
+\usepackage{color}
+
+%use typewriter font which supports bold characters
+\usepackage{beramono}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.5,0,0.33}
+\definecolor{codepurblue}{rgb}{0.16,0.0,1.0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+% TODO: Set Python colors
+\lstdefinestyle{codestyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\bfseries\color{codepurple},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurblue},
+    basicstyle=\scriptsize\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                     
+    numbersep=5pt,                 
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    texcl=true,
+}
+
+\lstset{style=codestyle}
+
+% ===========================
 
 \begin{document}
 
@@ -146,6 +197,7 @@
 \include{chapters/11_LogisticRegressionBasics}
 \include{chapters/12_LogisticRegression}
 \include{chapters/13_DecisionTree}
+\include{chapters/14_RandomForest}
 
 \include{chapters/NeuralNetworks}
 

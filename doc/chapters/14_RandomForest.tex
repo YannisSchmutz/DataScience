@@ -1,0 +1,261 @@
+\newpage
+\section{Random Forest}
+
+Der Random Forest ist ein \textbf{supervised learning Algorithmus}. Er kann sowohl für Klassifizierung wie auch für Regression verwendet werden. Wir konzentrieren uns hierbei aber lediglich auf die \textbf{Klassifizierung}. \\
+
+Random Forest nutz die sogenannte \textbf{Ensemble Learning Methode}. Beim Ensemble Learning werden mehrere Lernalgorithmen zusammen verwendet, um ein \textbf{besseres Ergebnis} zu erhalten. Random Forest nutzt mehrere \textbf{Decision Trees}, um die \textbf{Tendenz zum Overfitting zu verringern}. \\
+
+\textbf{Grundlegende Idee:}\\
+\begin{itemize}
+	\item Mehrere Decision Trees werden \textbf{zufällig} erstellt.
+	\item Jeder DT mache eine Vorhersage.
+	\item Die Vorhersage des RF ist eine \textbf{Kombination} der einzelnen Trees.
+\end{itemize}
+
+%
+\begin{figure}[H]
+	\centering
+	\label{fig:random_forest}
+	\begin{forest}
+	for tree={
+		l sep=2em, 
+		s sep=2em, 
+		anchor=center, 
+		inner sep=0.3em, 
+		fill=blue!50,
+		circle, 
+		%font=\Large\sffamily,
+		where level=1{no edge}{},
+		}
+	[Training Data, draw, rectangle, rounded corners, orange, text=white,alias=TD
+	    [,red!70,alias=a1
+	    	[
+	    		[,alias=a2]
+	    		[]
+	    	]
+	    	[,red!70,edge label={node[above=1ex,marrow]{}}
+	    		[
+	    			[]
+	    			[]
+	    		]
+	    		[,red!70,edge label={node[above=1ex,marrow]{}}
+	    			[,red!70,edge label={node[below=1ex,marrow]{}}]
+	    			[,alias=a3]
+	    		]
+	    	]
+	    ]
+	    [,red!70,alias=b1
+	    	[,red!70,edge label={node[below=1ex,marrow]{}}
+	    		[
+	    			[,alias=b2]
+	    			[]
+	    		]
+	    		[,red!70,edge label={node[above=1ex,marrow]{}}]
+	    	]
+	    	[
+	    		[]
+	    		[
+	    			[]
+	    			[,alias=b3]
+	    		]
+	    	]
+	    ]
+	    [~$\cdots$~,scale=3,no edge,fill=none,yshift=-1em]
+	    [,red!70,alias=c1
+	    	[
+	    		[,alias=c2]
+	    		[]
+	    	]
+	    	[,red!70,edge label={node[above=1ex,marrow]{}}
+	    		[,red!70,edge label={node[above=1ex,marrow]{}}
+	    			[,alias=c3]
+	    			[,red!70,edge label={node[above=1ex,marrow]{}}]
+	    		]
+	    		[,alias=c4]
+	    	]
+	    ]
+	]
+	\node[draw,fit=(a1)(a2)(a3)](f1){};  
+	\node[draw,fit=(b1)(b2)(b3)](f2){};  
+	\node[draw,fit=(c1)(c2)(c3)(c4)](f3){};
+	\node[below right=0.5em, inner sep=0pt] at (f1.north west) {Tree 1};
+	\node[below right=0.5em, inner sep=0pt] at (f2.north west) {Tree 2};
+	\node[below right=0.5em, inner sep=0pt] at (f3.north west) {Tree $n$};
+	\path (f1.south west)--(f3.south east) node[midway,below=4em, node box] (myResultNode) {Mittelwert bei Regression. Mehrheitsbeschluss bei Klassifikation};
+	\node[below=2em of myResultNode, node box] (pred){Prediction};
+	\foreach \X in {1,2,3}{
+		\draw[-stealth] (TD) -- (f\X.north);
+		\draw[-stealth] (f\X.south) -- (myResultNode);
+	};
+	\draw[-stealth] (myResultNode) -- (pred);
+	\end{forest}
+	\caption{Random Forest}
+\end{figure}
+%
+
+% ==================
+\newpage
+\subsection{Zufälligkeit im Random Forest}
+
+Es gibt \textbf{zwei Hauptarten}, um den Random Forest zu erstellen. \textbf{Bagging} und \textbf{Random Vector Method}. Diese können zusammen oder auch einzeln beim Erstellen des RF-Models verwendet werden. 
+
+\subsubsection{Bagging}
+
+Diese Methode ist auch als \textbf{Bootstraping} bekannt.
+
+\begin{itemize}
+	\item Jeder DT nutzt nur eine \textbf{Teilmenge (bootstrap sample)} der Trainingsdaten.
+	\item Somit können sich die einzelnen DTs nicht komplett den Trainisdaten anpassen (weniger overfitting). 
+\end{itemize}
+
+%
+\begin{figure}[H]
+	\centering
+	\label{fig:random_forest_bagging}
+	\begin{forest}
+	for tree={
+		l sep=2em, 
+		s sep=2em, 
+		anchor=center, 
+		inner sep=0.3em, 
+		fill=blue!50,
+		circle, 
+		%font=\Large\sffamily,
+		where level=1{no edge}{},
+		}
+	[Training Data, draw, rectangle, rounded corners, orange, text=white,alias=TD
+	    [Bootstrap Set 1, rectangle, text=white, alias=BS1
+	    [,red!70,alias=a1
+	    	[
+	    		[,alias=a2]
+	    		[]
+	    	]
+	    	[,red!70,edge label={node[above=1ex,marrow]{}}
+	    		[
+	    			[]
+	    			[]
+	    		]
+	    		[,red!70,edge label={node[above=1ex,marrow]{}}
+	    			[,red!70,edge label={node[below=1ex,marrow]{}}]
+	    			[,alias=a3]
+	    		]
+	    	]
+	    ]]
+	    [Bootstrap Set 2, rectangle, text=white, alias=BS2
+	    [,red!70,alias=b1
+	    	[,red!70,edge label={node[below=1ex,marrow]{}}
+	    		[
+	    			[,alias=b2]
+	    			[]
+	    		]
+	    		[,red!70,edge label={node[above=1ex,marrow]{}}]
+	    	]
+	    	[
+	    		[]
+	    		[
+	    			[]
+	    			[,alias=b3]
+	    		]
+	    	]
+	    ]]
+	    [~$\cdots$~,scale=3,no edge,fill=none,yshift=-1em]
+	    [Bootstrap Set n, rectangle, text=white, alias=BSn
+	    [,red!70,alias=c1
+	    	[
+	    		[,alias=c2]
+	    		[]
+	    	]
+	    	[,red!70,edge label={node[above=1ex,marrow]{}}
+	    		[,red!70,edge label={node[above=1ex,marrow]{}}
+	    			[,alias=c3]
+	    			[,red!70,edge label={node[above=1ex,marrow]{}}]
+	    		]
+	    		[,alias=c4]
+	    	]
+	    ]]
+	]
+	\node[draw,fit=(a1)(a2)(a3)](f1){};  
+	\node[draw,fit=(b1)(b2)(b3)](f2){};  
+	\node[draw,fit=(c1)(c2)(c3)(c4)](f3){};
+	\node[below right=0.5em, inner sep=0pt] at (f1.north west) {Tree 1};
+	\node[below right=0.5em, inner sep=0pt] at (f2.north west) {Tree 2};
+	\node[below right=0.5em, inner sep=0pt] at (f3.north west) {Tree $n$};
+	\path (f1.south west)--(f3.south east) node[midway,below=4em, node box] (myResultNode) {Mittelwert bei Regression. Mehrheitsbeschluss bei Klassifikation};
+	\node[below=2em of myResultNode, node box] (pred){Prediction};
+	\draw[-stealth] (TD) -- (BS1.north);
+	\draw[-stealth] (TD) -- (BS2.north);
+	\draw[-stealth] (TD) -- (BSn.north);
+	\foreach \X in {1,2,3}{
+		%\draw[-stealth] (TD) -- (f\X.north);
+		\draw[-stealth] (f\X.south) -- (myResultNode);
+	};
+	\draw[-stealth] (myResultNode) -- (pred);
+	\end{forest}
+	\caption{Random Forest: Bagging}
+\end{figure}
+%
+
+\subsubsection{Random Vector Method}
+
+\begin{itemize}
+	\item Bei \textbf{jeder Entscheidung} (internal Node) wird der beste Split aus $m$ \textbf{zufälligen Attributen} (Features) gewählt. Anstatt von allen möglichen Features das Beste zu wählen.
+	\item Die führt bei jedem Baum zu anderen Entscheidungsknoten.
+\end{itemize}
+
+
+
+
+\newpage
+\subsection{Algorithmus}
+Hier eine vereinfachte Darstellung des Random Forest Algorithmus.\\
+
+\begin{algorithm}
+	\caption{Random Forest Algorithmus}
+	\begin{algorithmic} 
+	\For{$b \gets 1$ to $B$}
+	\Comment B = Anzahl Trees
+	\State {Ziehe eine Bootstrap-Stichprobe aus den Trainingsdaten}
+	\State {Erstelle einen Decision Tree $T_{b}$}
+	\Repeat
+	\Comment Rekursiv für jeden Endknoten
+		\State {Wähle zufällig $m$ Variablen (Features) aus}
+		\State {Wähle den besten Split-Punkt/die beste Variable unter den $m$ Variablen aus.}
+		\State {Teile den Knoten in zwei Child-nodes}
+	\Until{Gewünschte Grösse des Baumes erreicht ist}
+	\EndFor
+	\Return Gebe das Tree-Ensemble zurück
+	\end{algorithmic}
+\end{algorithm}
+
+
+% ===
+\subsection{Python Model}
+
+Hier ein Beispiel wie ein Random Forest Model in Python mittels Sklearn erstellt werden könnte. \\
+
+\begin{lstlisting}[language=Python]
+#!/usr/bin/env python
+
+
+from sklearn.ensemble import RandomForestClassifier
+
+# Data preparation
+
+model = RandomForestClassifier(
+    n_estimators=100, # The number of trees in the forest.
+    criterion='entropy', # The function to measure the quality of a split. 
+    max_depth=None, # The maximum depth of the tree.
+    max_features='sqrt', # The minimum number of samples required to be at a leaf node
+    bootstrap=True, # Whether bootstrap samples are used when building trees
+    max_samples=None # If bootstrap is True, the number of samples to draw from X to train each base estimator.
+)
+
+model.fit(X,y)
+# ...
+model.predict(sample)
+
+\end{lstlisting}
+
+
+
+

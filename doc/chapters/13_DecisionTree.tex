@@ -1,7 +1,7 @@
 \newpage
 \section{Decision Tree}
 
-Der Decision Tree ist ein \textbf{supervised Klassifizierungsalgorithmus}. \\
+Der Decision Tree ist ein \textbf{supervised learning Algorithmus}. Er kann sowohl für Klassifizierung wie auch für Regression verwendet werden. Wir konzentrieren uns hierbei aber lediglich auf die \textbf{Klassifizierung}. \\
 
 \textbf{Grundlegende Idee:} \\
 Basierend auf den Target-Labels und deren Features wird eine \textbf{Serie von Entscheidungen} erstellt. Entsprechend diesen Entscheidungen wird einem neuen (unbekannten) Sample eine Klasse zugewiesen. 
@@ -322,4 +322,36 @@ Dies zwingt den DT Attribute zu verwenden, die über das ganze Datenset hinweg c
 
 \textbf{Eine minimale Anzahl Samples per externen Knoten fordern}\\
 Verfolgt das gleiche Ziel wie oben, jedoch ohne explizit die Tiefe zu Limitieren. Da in jedem externen Knoten eine Mindestanzahl gefordert wird, kann der DT keine all zu spezifischen Decisions definieren.
+
+
+
+% =========
+\subsection{Python Model}
+
+Hier ein Beispiel eines Decision Tree Models erstellt in Python mittels Sklearn.
+
+\begin{lstlisting}[language=Python]
+#!/usr/bin/env python
+from sklearn import tree
+
+
+# Data preparation
+model = tree.DecisionTreeClassifier(
+	criterion='entropy', # The function to measure the quality of a split. ('gini' or 'entropy')
+	splitter='best', # The strategy used to choose the split at each node. ('best' or 'random')
+	max_depth=None, # The maximum depth of the tree.
+	min_samples_split=2, # The minimum number of samples required to split an internal node
+	min_samples_leaf=1, # The minimum number of samples required to be at a leaf node.
+	max_features=None, # The number of features to consider when looking for the best split
+	max_leaf_nodes=None, # Max number of leaf nodes
+	)
+model.fit(X,y)
+# ...
+model.predict(sample)
+
+\end{lstlisting}
+
+
+
+
 

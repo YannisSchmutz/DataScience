@@ -33,12 +33,12 @@ Der Gradient Descent Algorithmus für eine simple Lineare Regression rechnet sic
 \begin{algorithm}
 \caption{Calculate $\text{min}_{\Theta} J(\Theta)$}
 \begin{algorithmic} 
-\REPEAT 
-\STATE $ \Theta_{0} := \Theta_{0} - \alpha \frac{1}{m} \sum_{i=1}^{m}(h_{\Theta}(x^{(i)}) - y^{(i)}) $
+\Repeat 
+\State $ \Theta_{0} := \Theta_{0} - \alpha \frac{1}{m} \sum_{i=1}^{m}(h_{\Theta}(x^{(i)}) - y^{(i)}) $
 
-\STATE $ \Theta_{1} := \Theta_{1} - \alpha \frac{1}{m} \sum_{i=1}^{m}(h_{\Theta}(x^{(i)}) - y^{(i)})*x^{(i)} $
-\COMMENT{simultaneously update all $\Theta_{j}$}
-\UNTIL{$J(\Theta_{0}, \Theta_{1})$ converges}
+\State $ \Theta_{1} := \Theta_{1} - \alpha \frac{1}{m} \sum_{i=1}^{m}(h_{\Theta}(x^{(i)}) - y^{(i)})*x^{(i)} $
+\Comment{simultaneously update all $\Theta_{j}$}
+\Until{$J(\Theta_{0}, \Theta_{1})$ converges}
 \end{algorithmic}
 \end{algorithm}
 
